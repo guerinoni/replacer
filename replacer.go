@@ -54,14 +54,14 @@ func execChangeExtension(rootDir string, from string, to string) {
 		to = "." + to
 	}
 
-	filepath.Walk(rootDir, func(path string, info os.FileInfo, err error) error {
+	filepath.Walk(rootDir, func(filename string, info os.FileInfo, err error) error {
 		if err != nil {
 			return err
 		}
 
 		if !info.IsDir() {
 			if filepath.Ext(info.Name()) == from {
-				src := path
+				src := filename
 				dst := strings.TrimRight(src, from)
 				dst += to
 				if err := os.Rename(src, dst); err != nil {
