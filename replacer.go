@@ -4,6 +4,12 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"path/filepath"
+	"strings"
+)
+
+const (
+	cmdExt = "ext"
 )
 
 func needHelp(args []string) bool {
@@ -12,7 +18,7 @@ func needHelp(args []string) bool {
 
 func printHelp() {
 	fmt.Println("	folder (first argument)")
-	fmt.Println("	ext <from> -> <to> (change extension of every file)")
+	fmt.Println("	ext <from> 2 <to> (change extension of every file)")
 }
 
 func checkFolder(args []string) error {
@@ -25,4 +31,45 @@ func checkFolder(args []string) error {
 	}
 
 	return nil
+}
+
+func execCmd(args []string) error {
+	if len(args) <= 2 {
+		return errors.New("command missing")
+	}
+
+	if args[2] == cmdExt {
+		execChangeExtension(args[1], args[3], args[5])
+	}
+
+	return nil
+}
+
+func execChangeExtension(rootDir string, from string, to string) {
+	if !strings.HasPrefix(from, ".") {
+		from = "." + from
+	}
+
+	if !strings.HasPrefix(to, ".") {
+		to = "." + to
+	}
+
+	filepath.Walk(rootDir, func(path string, info os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+
+		if !info.IsDir() {
+			if filepath.Ext(info.Name()) == from {
+				src := path
+				dst := strings.TrimRight(src, from)
+				dst += to
+				if err := os.Rename(src, dst); err != nil {
+					fmt.Println("error renaming")
+				}
+			}
+		}
+
+		return nil
+	})
 }

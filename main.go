@@ -17,4 +17,8 @@ func main() {
 	if err := checkFolder(os.Args); err != nil {
 		fmt.Println("Error parsing folder ->", err)
 	}
+
+	if err := execCmd(os.Args); err != nil {
+		fmt.Println("Error executing cmd ->", err)
+	}
 }
