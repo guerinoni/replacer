@@ -1,4 +1,6 @@
-# replacer
+# replacer 
+![CI](https://github.com/guerinoni/replacer/workflows/CI/badge.svg)
+
 Command-line tool to rename a lot of files with some rules :)
 
 # Usage
