@@ -17,10 +17,10 @@ jobs:
             asset_name: replacer-linux-amd64
           - os: windows-latest
             artifact_name: replacer.exe
-            asset_name: mything-windows-amd64
+            asset_name: replacer-windows-amd64
           - os: macos-latest
             artifact_name: replacer
-            asset_name: mything-macos-amd64
+            asset_name: replacer-macos-amd64
 
     runs-on: ${{ matrix.os }}
     steps:
