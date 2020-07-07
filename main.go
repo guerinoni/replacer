@@ -1,12 +1,19 @@
 package main
 
-import(
+import (
 	"fmt"
 	"os"
 )
 
+var version string
+
 func main() {
-	fmt.Println("replacer version 0.0.1")
+	if needHelp(os.Args) {
+		fmt.Printf("replacer (version %s)\n", version)
+		printHelp()
+		return
+	}
+
 	if err := checkFolder(os.Args); err != nil {
 		fmt.Println("Error parsing folder ->", err)
 	}
