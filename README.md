@@ -3,6 +3,9 @@
 
 Command-line tool to rename a lot of files with some rules :)
 
+# Feature
+* Replace extension of files
+
 # Usage
 ```
 ./replacer -h (help)
