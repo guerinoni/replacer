@@ -32,16 +32,9 @@ jobs:
         run: go build
 
       - name: test
-        run: go test -v -covermode=count -coverprofile=coverage.out
+        run: go test -v -coverprofile=profile.cov
 
-      - name: convert coverage to lcov
-        uses: jandelgado/gcov2lcov-action@master
+      - name: send coverage goveralls
+        uses: shogo82148/actions-goveralls@v1.4.0
         with:
-          infile: coverage.out
-          outfile: lcov.info
-
-      - name: coveralls
-        uses: coverallsapp/github-action@master
-        with:
-          github-token: ${{ secrets.github_token }}
-          path-to-lcov: lcov.info
+          path-to-profile: profile.cov
