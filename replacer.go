@@ -38,8 +38,11 @@ func execCmd(args []string) error {
 		return errors.New("command missing")
 	}
 
-	if args[2] == cmdExt {
+	switch cmd := args[2]; cmd {
+	case cmdExt:
 		execChangeExtension(args[1], args[3], args[5])
+	default:
+		fmt.Printf("command %s not found\n", cmd)
 	}
 
 	return nil
@@ -56,17 +59,20 @@ func execChangeExtension(rootDir string, from string, to string) {
 
 	filepath.Walk(rootDir, func(filename string, info os.FileInfo, err error) error {
 		if err != nil {
+			fmt.Println(err)
 			return err
 		}
 
-		if !info.IsDir() {
-			if filepath.Ext(info.Name()) == from {
-				src := filename
-				dst := strings.TrimRight(src, from)
-				dst += to
-				if err := os.Rename(src, dst); err != nil {
-					fmt.Println("error renaming")
-				}
+		if info.IsDir() {
+			return nil
+		}
+
+		if filepath.Ext(info.Name()) == from {
+			src := filename
+			dst := strings.TrimRight(src, from)
+			dst += to
+			if err := os.Rename(src, dst); err != nil {
+				fmt.Println(err)
 			}
 		}
 
