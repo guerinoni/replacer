@@ -57,7 +57,7 @@ func execChangeExtension(rootDir string, from string, to string) {
 		to = "." + to
 	}
 
-	filepath.Walk(rootDir, func(filename string, info os.FileInfo, err error) error {
+	err := filepath.Walk(rootDir, func(filename string, info os.FileInfo, err error) error {
 		if err != nil {
 			fmt.Println(err)
 			return err
@@ -78,4 +78,8 @@ func execChangeExtension(rootDir string, from string, to string) {
 
 		return nil
 	})
+
+	if err != nil {
+		fmt.Println("error walking on ", rootDir)
+	}
 }
