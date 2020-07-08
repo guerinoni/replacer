@@ -1,0 +1,19 @@
+linters:
+  disable-all: true
+  enable:
+    - goimports
+    - govet
+    - errcheck
+    - staticcheck
+    - unused
+    - gosimple
+    - structcheck
+    - varcheck
+    - ineffassign
+    - deadcode
+    - typecheck
+    - golint
+
+linters-settings:
+  govet:
+    check-shadowing: true
