@@ -1,5 +1,6 @@
 # replacer 
 ![CI](https://github.com/guerinoni/replacer/workflows/CI/badge.svg)
+[![codecov](https://codecov.io/gh/guerinoni/replacer/branch/master/graph/badge.svg)](https://codecov.io/gh/guerinoni/replacer)
 
 Command-line tool to rename a lot of files with some rules :)
 
