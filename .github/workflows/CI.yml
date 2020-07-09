@@ -32,9 +32,10 @@ jobs:
         run: go build
 
       - name: test
-        run: go test -v -coverprofile=profile.cov
+        run: go test -race -covermode=atomic -coverprofile=coverage.txt .
 
-      - name: send coverage goveralls
-        uses: shogo82148/actions-goveralls@v1.4.0
+      - name: Codecov
+        uses: codecov/codecov-action@v1.0.10
         with:
-          path-to-profile: profile.cov
+          token: ${{secrets.CODECOV_TOKEN}}
+          file: ./coverage.txt
