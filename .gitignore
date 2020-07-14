@@ -30,6 +30,7 @@
 !.vscode/launch.json
 !.vscode/extensions.json
 *.code-workspace
+.devcontainer/*
 
 ### VisualStudioCode Patch ###
 # Ignore all local history of files
