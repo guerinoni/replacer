@@ -9,7 +9,8 @@ import (
 )
 
 const (
-	cmdExt = "ext"
+	cmdExt      = "ext"
+	cmdContains = "contains"
 )
 
 func needHelp(args []string) bool {
@@ -19,6 +20,7 @@ func needHelp(args []string) bool {
 func printHelp() {
 	fmt.Println("	folder (first argument)")
 	fmt.Println("	ext <from> 2 <to> (change extension of every file)")
+	fmt.Println("	contains <oldStr> 2 <newStr> (change oldStr with newStr if it contains)")
 }
 
 func checkFolder(args []string) error {
@@ -41,6 +43,8 @@ func execCmd(args []string) error {
 	switch cmd := args[2]; cmd {
 	case cmdExt:
 		execChangeExtension(args[1], args[3], args[5])
+	case cmdContains:
+		execChangeContains(args[1], args[3], args[5])
 	default:
 		fmt.Printf("command %s not found\n", cmd)
 	}
@@ -71,6 +75,33 @@ func execChangeExtension(rootDir, from, to string) {
 			src := filename
 			dst := strings.TrimRight(src, from)
 			dst += to
+			if err := os.Rename(src, dst); err != nil {
+				fmt.Println(err)
+			}
+		}
+
+		return nil
+	})
+
+	if err != nil {
+		fmt.Println("error walking on ", rootDir)
+	}
+}
+
+func execChangeContains(rootDir, oldStr, newStr string) {
+	err := filepath.Walk(rootDir, func(filename string, info os.FileInfo, err error) error {
+		if err != nil {
+			fmt.Println(err)
+			return err
+		}
+
+		if info.IsDir() {
+			return nil
+		}
+
+		if strings.Contains(filepath.Base(info.Name()), oldStr) {
+			src := filename
+			dst := strings.ReplaceAll(src, oldStr, newStr)
 			if err := os.Rename(src, dst); err != nil {
 				fmt.Println(err)
 			}
