@@ -48,7 +48,7 @@ func execCmd(args []string) error {
 	return nil
 }
 
-func execChangeExtension(rootDir string, from string, to string) {
+func execChangeExtension(rootDir, from, to string) {
 	if !strings.HasPrefix(from, ".") {
 		from = "." + from
 	}
