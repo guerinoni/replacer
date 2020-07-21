@@ -24,10 +24,10 @@ jobs:
           go-version: ${{ matrix.go }}
 
       - name: build
-        run: go build
+        run: go build -o replacer ./cmd/replacer/
 
       - name: test
-        run: go test -race -covermode=atomic -coverprofile=coverage.txt .
+        run: go test ./... -race -covermode=atomic -coverprofile=coverage.txt .
 
       - name: Codecov
         uses: codecov/codecov-action@v1.0.10
