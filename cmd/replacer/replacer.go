@@ -14,7 +14,7 @@ const (
 )
 
 func needHelp(args []string) bool {
-	return len(args) > 1 && args[1] == "-h"
+	return len(args) <= 1 || len(args) > 1 && args[1] == "-h"
 }
 
 func printHelp() {
