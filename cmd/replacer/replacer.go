@@ -2,6 +2,7 @@ package main
 
 import (
 	"errors"
+	"flag"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -13,26 +14,27 @@ const (
 	cmdContains = "contains"
 )
 
-func needHelp(args []string) bool {
-	return len(args) <= 1 || len(args) > 1 && args[1] == "-h"
+var directory *string
+
+func createFlags() {
+	directory = flag.String("d", "", "Specify working directory. (Required)")
+	flag.String("ext", "", "Choose extension to change (<from> <to>).")
 }
 
-func printHelp() {
-	fmt.Println("	folder (first argument)")
-	fmt.Println("	ext <from> 2 <to> (change extension of every file)")
-	fmt.Println("	contains <oldStr> 2 <newStr> (change oldStr with newStr if it contains)")
+func exec() {
+	if err := checkFolder(); err != nil {
+		fmt.Println("Folder error")
+		os.Exit(1)
+	}
 }
 
-func checkFolder(args []string) error {
-	if len(args) <= 1 {
-		return errors.New("must contain folder argument")
+func checkFolder() error {
+	fi, err := os.Stat(*directory)
+	if fi != nil && err == nil {
+		return nil
 	}
 
-	if _, err := os.Stat(args[1]); os.IsNotExist(err) {
-		return errors.New("this folder not exists")
-	}
-
-	return nil
+	return err
 }
 
 func execCmd(args []string) error {

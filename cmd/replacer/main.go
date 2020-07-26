@@ -1,24 +1,20 @@
 package main
 
 import (
-	"fmt"
+	"flag"
 	"os"
 )
 
 var version string
 
 func main() {
-	if needHelp(os.Args) {
-		fmt.Printf("replacer (version %s)\n", version)
-		printHelp()
-		return
+	createFlags()
+
+	if len(os.Args) == 1 {
+		flag.PrintDefaults()
 	}
 
-	if err := checkFolder(os.Args); err != nil {
-		fmt.Println("Error parsing folder ->", err)
-	}
+	flag.Parse()
 
-	if err := execCmd(os.Args); err != nil {
-		fmt.Println("Error executing cmd ->", err)
-	}
+	exec()
 }
