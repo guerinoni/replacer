@@ -1,7 +1,6 @@
 package main
 
 import (
-	"errors"
 	"flag"
 	"fmt"
 	"os"
@@ -15,16 +14,22 @@ const (
 )
 
 var directory *string
+var extensionCmd *string
 
 func createFlags() {
+	flag.String("v", "", "Return version of replacer.")
 	directory = flag.String("d", "", "Specify working directory. (Required)")
-	flag.String("ext", "", "Choose extension to change (<from> <to>).")
+	extensionCmd = flag.String("ext", "", "Choose extension to change (<from> <to>).")
 }
 
-func exec() {
+func exec(extraArgs []string) {
 	if err := checkFolder(); err != nil {
 		fmt.Println("Folder error")
 		os.Exit(1)
+	}
+
+	if *extensionCmd != "" {
+		execChangeExtension(*directory, *extensionCmd, extraArgs[0])
 	}
 }
 
@@ -35,23 +40,6 @@ func checkFolder() error {
 	}
 
 	return err
-}
-
-func execCmd(args []string) error {
-	if len(args) <= 2 {
-		return errors.New("command missing")
-	}
-
-	switch cmd := args[2]; cmd {
-	case cmdExt:
-		execChangeExtension(args[1], args[3], args[5])
-	case cmdContains:
-		execChangeContains(args[1], args[3], args[5])
-	default:
-		fmt.Printf("command %s not found\n", cmd)
-	}
-
-	return nil
 }
 
 func execChangeExtension(rootDir, from, to string) {
