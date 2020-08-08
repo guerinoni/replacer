@@ -8,11 +8,6 @@ import (
 	"strings"
 )
 
-const (
-	cmdExt      = "ext"
-	cmdContains = "contains"
-)
-
 var directory *string
 var extensionCmd *string
 
