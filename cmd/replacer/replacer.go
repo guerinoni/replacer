@@ -63,7 +63,7 @@ func execChangeExtension(rootDir, from, to string) {
 
 		if filepath.Ext(info.Name()) == from {
 			src := filename
-			dst := strings.TrimRight(src, from)
+			dst := strings.TrimSuffix(src, from)
 			dst += to
 			if err := os.Rename(src, dst); err != nil {
 				fmt.Println(err)
