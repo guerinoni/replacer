@@ -1,0 +1,6 @@
+- regExp: ".*\\.go+$"
+  labels: ["source"]
+- regExp: ".*\\.md+$"
+  labels: ["documentation"]
+- regExp: ".*\\.md+$"
+  labels: ["continuos integration"]
