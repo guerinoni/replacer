@@ -1,0 +1,15 @@
+name: Check PR can be merged
+on:
+  pull_request:
+    types: [labeled]
+    branches:
+      - '*'
+jobs:
+  PRcheck:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Merge me!
+        uses: ridedott/merge-me-action@master
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          MERGE_METHOD: REBASE
