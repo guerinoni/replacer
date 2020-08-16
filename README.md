@@ -13,5 +13,5 @@ Command-line tool to rename a lot of files with some rules :)
 ```
 replacer -h (help)
 replacer -d . -ext txt c (change all file with extension "txt" to "c" in current dir )
-replacer -d . -contains as 2 sa (change all file that contain "as" to "sa" in current dir)
+replacer -d . -contains as sa (change all file that contain "as" to "sa" in current dir)
 ```

@@ -10,11 +10,13 @@ import (
 
 var directory *string
 var extensionCmd *string
+var containsCmd *string
 
 func createFlags() {
 	flag.String("v", "", "Return version of replacer.")
 	directory = flag.String("d", "", "Specify working directory. (Required)")
 	extensionCmd = flag.String("ext", "", "Choose extension to change (<from> <to>).")
+	containsCmd = flag.String("contains", "", "Choose substr to change (<from> <to>).")
 }
 
 func exec(extraArgs []string) {
@@ -25,6 +27,10 @@ func exec(extraArgs []string) {
 
 	if *extensionCmd != "" {
 		execChangeExtension(*directory, *extensionCmd, extraArgs[0])
+	}
+
+	if *containsCmd != "" {
+		execChangeContains(*directory, *containsCmd, extraArgs[0])
 	}
 }
 
@@ -73,7 +79,7 @@ func execChangeExtension(rootDir, from, to string) {
 	}
 }
 
-func execChangeContains(rootDir, oldStr, newStr string) {
+func execChangeContains(rootDir, from, to string) {
 	err := filepath.Walk(rootDir, func(filename string, info os.FileInfo, err error) error {
 		if err != nil {
 			fmt.Println(err)
@@ -84,9 +90,9 @@ func execChangeContains(rootDir, oldStr, newStr string) {
 			return nil
 		}
 
-		if strings.Contains(filepath.Base(info.Name()), oldStr) {
+		if strings.Contains(filepath.Base(info.Name()), from) {
 			src := filename
-			dst := strings.ReplaceAll(src, oldStr, newStr)
+			dst := strings.ReplaceAll(src, from, to)
 			if err := os.Rename(src, dst); err != nil {
 				fmt.Println(err)
 			}
