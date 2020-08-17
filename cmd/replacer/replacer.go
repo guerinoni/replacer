@@ -6,20 +6,28 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+	"unicode"
 )
 
 var directory *string
 var extensionCmd *string
 var containsCmd *string
+var snakeCmd *string
 
 func createFlags() {
 	flag.String("v", "", "Return version of replacer.")
 	directory = flag.String("d", "", "Specify working directory. (Required)")
 	extensionCmd = flag.String("ext", "", "Choose extension to change (<from> <to>).")
 	containsCmd = flag.String("contains", "", "Choose substr to change (<from> <to>).")
+	snakeCmd = flag.String("snake", "", "Rename all files in path specified with snake case.")
 }
 
 func exec(extraArgs []string) {
+	if *snakeCmd != "" {
+		execSnakeCase(*snakeCmd)
+		return
+	}
+
 	if err := checkFolder(); err != nil {
 		fmt.Println("Folder error")
 		os.Exit(1)
@@ -96,6 +104,39 @@ func execChangeContains(rootDir, from, to string) {
 			if err := os.Rename(src, dst); err != nil {
 				fmt.Println(err)
 			}
+		}
+
+		return nil
+	})
+
+	if err != nil {
+		fmt.Println("error walking on ", rootDir)
+	}
+}
+
+func execSnakeCase(rootDir string) {
+	err := filepath.Walk(rootDir, func(filename string, info os.FileInfo, err error) error {
+		if err != nil {
+			fmt.Println(err)
+			return err
+		}
+
+		if info.IsDir() {
+			return nil
+		}
+
+		newName := ""
+		for _, v := range info.Name() {
+			if !unicode.IsUpper(v) {
+				newName += string(v)
+			} else {
+				newName += "_" + string(unicode.ToLower(v))
+			}
+		}
+
+		err = os.Rename(filename, newName)
+		if err != nil {
+			return err
 		}
 
 		return nil
