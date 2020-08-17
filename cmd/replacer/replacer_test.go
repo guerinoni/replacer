@@ -9,11 +9,16 @@ func TestExecChangeExtensionWithDot(t *testing.T) {
 	fn, _ := os.Getwd()
 	fn += string(os.PathSeparator) + "foo.txt"
 	file, err := os.Create(fn)
+	defer func() {
+		err = file.Close()
+		if err != nil {
+			t.Error(err)
+		}
+	}()
+
 	if err != nil {
 		t.Errorf("error creating file")
 	}
-
-	file.Close()
 
 	execChangeExtension(file.Name(), ".txt", ".ttt")
 
@@ -30,11 +35,16 @@ func TestExecChangeExtensionWithoutDot(t *testing.T) {
 	fn, _ := os.Getwd()
 	fn += string(os.PathSeparator) + "foo.txt"
 	file, err := os.Create(fn)
+	defer func() {
+		err = file.Close()
+		if err != nil {
+			t.Error(err)
+		}
+	}()
+
 	if err != nil {
 		t.Errorf("error creating file")
 	}
-
-	file.Close()
 
 	execChangeExtension(file.Name(), "txt", "ttt")
 
@@ -51,7 +61,13 @@ func TestExecChangeExtensionWithNameEqualExtension(t *testing.T) {
 	fn, _ := os.Getwd()
 	fn += string(os.PathSeparator) + "foo.foo"
 	file, err := os.Create(fn)
-	defer file.Close()
+	defer func() {
+		err = file.Close()
+		if err != nil {
+			t.Error(err)
+		}
+	}()
+
 	if err != nil {
 		t.Errorf("error creating file")
 	}
@@ -71,7 +87,13 @@ func TestExecChangeContains(t *testing.T) {
 	fn, _ := os.Getwd()
 	fn += string(os.PathSeparator) + "asdf"
 	file, err := os.Create(fn)
-	defer file.Close()
+	defer func() {
+		err = file.Close()
+		if err != nil {
+			t.Error(err)
+		}
+	}()
+
 	if err != nil {
 		t.Errorf("error creating file")
 	}
@@ -91,7 +113,13 @@ func TestExecSnakeCase(t *testing.T) {
 	fn, _ := os.Getwd()
 	fn += string(os.PathSeparator) + "mainApplication.go"
 	file, err := os.Create(fn)
-	defer file.Close()
+	defer func() {
+		err = file.Close()
+		if err != nil {
+			t.Error(err)
+		}
+	}()
+
 	if err != nil {
 		t.Error(err)
 	}
