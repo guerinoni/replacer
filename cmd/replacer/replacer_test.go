@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"os"
 	"testing"
 )
@@ -147,6 +146,7 @@ func TestExecSnakeCaseInFolder(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
+
 	defer func() {
 		err = os.RemoveAll(fn)
 		if err != nil {
@@ -155,23 +155,20 @@ func TestExecSnakeCaseInFolder(t *testing.T) {
 	}()
 
 	filename := fn + string(os.PathSeparator) + "camelCase.cpp"
-	fmt.Println(filename)
 	file, errFile := os.Create(filename)
 	if errFile != nil {
 		t.Error(errFile)
 	}
 
-	defer func() {
-		err = file.Close()
-		if err != nil {
-			t.Error(err)
-		}
-	}()
+	err = file.Close()
+	if err != nil {
+		t.Error(err)
+	}
 
 	execSnakeCase(file.Name())
 
 	newFn := fn + string(os.PathSeparator) + "camel_case.cpp"
 	if _, err := os.Stat(newFn); os.IsNotExist(err) {
-		t.Errorf("file not exists after change extension")
+		t.Error(err)
 	}
 }
