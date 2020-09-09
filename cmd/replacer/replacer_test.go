@@ -172,3 +172,57 @@ func TestExecSnakeCaseInFolder(t *testing.T) {
 		t.Error(err)
 	}
 }
+
+func TestExecSnakeAllFolder(t *testing.T) {
+	fn, err := os.Getwd()
+	if err != nil {
+		t.Error(err)
+	}
+
+	fn += string(os.PathSeparator) + "folder"
+	err = os.Mkdir(fn, 0777)
+	if err != nil {
+		t.Error(err)
+	}
+
+	defer func() {
+		err = os.RemoveAll(fn)
+		if err != nil {
+			t.Error(err)
+		}
+	}()
+
+	filename := fn + string(os.PathSeparator) + "camelCase.cpp"
+	file, errFile := os.Create(filename)
+	if errFile != nil {
+		t.Error(errFile)
+	}
+
+	err = file.Close()
+	if err != nil {
+		t.Error(err)
+	}
+
+	filename = fn + string(os.PathSeparator) + "camelCase.txt"
+	file, errFile = os.Create(filename)
+	if errFile != nil {
+		t.Error(errFile)
+	}
+
+	err = file.Close()
+	if err != nil {
+		t.Error(err)
+	}
+
+	execSnakeCase(fn)
+
+	newFn := fn + string(os.PathSeparator) + "camel_case.cpp"
+	if _, err := os.Stat(newFn); os.IsNotExist(err) {
+		t.Error(err)
+	}
+
+	newFn = fn + string(os.PathSeparator) + "camel_case.txt"
+	if _, err := os.Stat(newFn); os.IsNotExist(err) {
+		t.Error(err)
+	}
+}

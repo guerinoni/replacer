@@ -130,7 +130,7 @@ func execSnakeCase(rootDir string) {
 			return err
 		}
 
-		var basePath string
+		basePath := rootDir
 		if !fInfo.IsDir() {
 			basePath = filepath.Dir(rootDir)
 		}
