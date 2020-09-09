@@ -14,5 +14,6 @@ Command-line tool to rename a lot of files with some rules :)
 replacer -h (help)
 replacer -d . -ext txt c (change all file with extension "txt" to "c" in current dir )
 replacer -d . -contains as sa (change all file that contain "as" to "sa" in current dir)
-replacer -snake <camelCaseFile> (convert to snake case)
+replacer -snake <camelCaseFile> (convert to snake case that file)
+replacer -snake <folder> (convert to snake case all folder)
 ```
