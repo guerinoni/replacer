@@ -2,5 +2,5 @@
   labels: ["source"]
 - regExp: ".*\\.md+$"
   labels: ["documentation"]
-- regExp: ".*\\.md+$"
+- regExp: ".*\\.yml+$"
   labels: ["continuos integration"]
