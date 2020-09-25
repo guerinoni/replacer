@@ -6,14 +6,10 @@
 Command-line tool to rename a lot of files with some rules :)
 
 # Feature
-* Replace extension of files
-* Change string contains in filenames
 
-# Usage
-```
-replacer -h (help)
-replacer -d . -ext txt c (change all file with extension "txt" to "c" in current dir )
-replacer -d . -contains as sa (change all file that contain "as" to "sa" in current dir)
-replacer -snake <camelCaseFile> (convert to snake case that file)
-replacer -snake <folder> (convert to snake case all folder)
-```
+- [x] help  `replacer -h`
+- [x] change extension `replacer -d . -ext txt c` (-d = directory)
+- [x] change contains `replacer -d . -contains as ss`
+- [x] convert to snake_case `replacer -snake <camelCaseFile>` or `replacer -snake <folder>`
+- [ ] convert to camelCase
+- [ ] remane list of files with incremental index
