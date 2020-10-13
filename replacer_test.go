@@ -83,6 +83,69 @@ func TestExecChangeExtensionWithNameEqualExtension(t *testing.T) {
 	os.Remove(newFn)
 }
 
+func TestExecChangeExtensionRecursive(t *testing.T) {
+	fn, err := os.Getwd()
+	if err != nil {
+		t.Error(err)
+	}
+
+	fn += string(os.PathSeparator) + "folder"
+	err = os.Mkdir(fn, 0777)
+	if err != nil {
+		t.Error(err)
+	}
+
+	firstFolderCreate, _ := os.Getwd()
+	firstFolderCreate += string(os.PathSeparator) + "folder"
+	defer func() {
+		err = os.RemoveAll(firstFolderCreate)
+		if err != nil {
+			t.Error(err)
+		}
+	}()
+
+	filename := fn + string(os.PathSeparator) + "foo.txt"
+	file, errFile := os.Create(filename)
+	if errFile != nil {
+		t.Error(errFile)
+	}
+
+	err = file.Close()
+	if err != nil {
+		t.Error(err)
+	}
+
+	fn += string(os.PathSeparator) + "folder1"
+	err = os.Mkdir(fn, 0777)
+	if err != nil {
+		t.Error(err)
+	}
+
+	filename1 := fn + string(os.PathSeparator) + "foo.txt"
+	file1, err := os.Create(filename1)
+	if err != nil {
+		t.Error(err)
+	}
+
+	err = file1.Close()
+	if err != nil {
+		t.Error(err)
+	}
+
+	execChangeExtension(firstFolderCreate, ".txt", ".ttt")
+
+	here, _ := os.Getwd()
+	newFn := here + string(os.PathSeparator) + "folder" + string(os.PathSeparator) + "foo.ttt"
+	if _, err := os.Stat(newFn); os.IsNotExist(err) {
+		t.Errorf("file not exists after change extension")
+	}
+
+	newFn1 := here + string(os.PathSeparator) + "folder" + string(os.PathSeparator) + "foo.ttt"
+	if _, err := os.Stat(newFn1); os.IsNotExist(err) {
+		t.Errorf("file not exists after change extension")
+	}
+}
+
 func TestExecChangeContains(t *testing.T) {
 	fn, _ := os.Getwd()
 	fn += string(os.PathSeparator) + "asdf"
