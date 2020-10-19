@@ -12,4 +12,4 @@ Command-line tool to rename a lot of files with some rules :)
 - [x] change contains `replacer -d . -contains as ss`
 - [x] convert to snake_case `replacer -snake <camelCaseFile>` or `replacer -snake <folder>`
 - [ ] convert to camelCase
-- [ ] remane list of files with incremental index
+- [ ] rename list of files with incremental index
