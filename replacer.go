@@ -8,7 +8,7 @@ import (
 	"unicode"
 )
 
-func execChangeExtension(rootDir, from, to string) {
+func execChangeExtension(rootDir, from, to string) error {
 	if !strings.HasPrefix(from, ".") {
 		from = "." + from
 	}
@@ -19,7 +19,6 @@ func execChangeExtension(rootDir, from, to string) {
 
 	err := filepath.Walk(rootDir, func(filename string, info os.FileInfo, err error) error {
 		if err != nil {
-			fmt.Println(err)
 			return err
 		}
 
@@ -39,9 +38,7 @@ func execChangeExtension(rootDir, from, to string) {
 		return nil
 	})
 
-	if err != nil {
-		fmt.Println("error walking on ", rootDir)
-	}
+	return err
 }
 
 func execChangeContains(rootDir, from, to string) {

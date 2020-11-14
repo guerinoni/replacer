@@ -51,7 +51,10 @@ func exec(extraArgs []string) {
 	}
 
 	if *extensionCmd != "" {
-		execChangeExtension(*directory, *extensionCmd, extraArgs[0])
+		err := execChangeExtension(*directory, *extensionCmd, extraArgs[0])
+		if err != nil {
+			panic(err)
+		}
 	}
 
 	if *containsCmd != "" {
