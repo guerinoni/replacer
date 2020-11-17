@@ -41,7 +41,10 @@ func createFlags() {
 
 func exec(extraArgs []string) {
 	if *snakeCmd != "" {
-		execSnakeCase(*snakeCmd)
+		err := execSnakeCase(*snakeCmd)
+		if err != nil {
+			panic(err)
+		}
 		return
 	}
 
@@ -58,7 +61,10 @@ func exec(extraArgs []string) {
 	}
 
 	if *containsCmd != "" {
-		execChangeContains(*directory, *containsCmd, extraArgs[0])
+		err := execChangeContains(*directory, *containsCmd, extraArgs[0])
+		if err != nil {
+			panic(err)
+		}
 	}
 }
 

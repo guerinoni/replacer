@@ -109,7 +109,7 @@ func TestExecChangeExtensionRecursive(t *testing.T) {
 	require.False(t, os.IsNotExist(err))
 }
 
-func TestChangeExtensionError(t *testing.T) {
+func TestExecChangeExtensionError(t *testing.T) {
 	require.Error(t, execChangeExtension("", ".txt", ".ttt"))
 }
 func TestExecChangeContains(t *testing.T) {
@@ -127,7 +127,7 @@ func TestExecChangeContains(t *testing.T) {
 		t.Errorf("error creating file")
 	}
 
-	execChangeContains(file.Name(), "sd", "ds")
+	require.NoError(t, execChangeContains(file.Name(), "sd", "ds"))
 
 	newFn, _ := os.Getwd()
 	newFn += string(os.PathSeparator) + "adsf"
@@ -136,6 +136,55 @@ func TestExecChangeContains(t *testing.T) {
 	}
 
 	os.Remove(newFn)
+}
+
+func TestExecChangeContainsRecursive(t *testing.T) {
+	fn, err := os.Getwd()
+	require.NoError(t, err)
+
+	fn += string(os.PathSeparator) + "folder"
+	err = os.Mkdir(fn, 0777)
+	require.NoError(t, err)
+
+	firstFolderCreate, _ := os.Getwd()
+	firstFolderCreate += string(os.PathSeparator) + "folder"
+	defer func() {
+		err = os.RemoveAll(firstFolderCreate)
+		require.NoError(t, err)
+	}()
+
+	filename := fn + string(os.PathSeparator) + "foo.txt"
+	file, err := os.Create(filename)
+	require.NoError(t, err)
+
+	err = file.Close()
+	require.NoError(t, err)
+
+	fn += string(os.PathSeparator) + "folder1"
+	err = os.Mkdir(fn, 0777)
+	require.NoError(t, err)
+
+	filename1 := fn + string(os.PathSeparator) + "foo.txt"
+	file1, err := os.Create(filename1)
+	require.NoError(t, err)
+
+	err = file1.Close()
+	require.NoError(t, err)
+
+	require.NoError(t, execChangeContains(firstFolderCreate, ".txt", ".ttt"))
+
+	here, _ := os.Getwd()
+	newFn := here + string(os.PathSeparator) + "folder" + string(os.PathSeparator) + "foo.ttt"
+	_, err = os.Stat(newFn)
+	require.False(t, os.IsNotExist(err))
+
+	newFn1 := here + string(os.PathSeparator) + "folder" + string(os.PathSeparator) + "foo.ttt"
+	_, err = os.Stat(newFn1)
+	require.False(t, os.IsNotExist(err))
+}
+
+func TestExecChangeContainsError(t *testing.T) {
+	require.Error(t, execChangeContains("", ".txt", ".ttt"))
 }
 
 func TestExecSnakeCase(t *testing.T) {
@@ -153,7 +202,7 @@ func TestExecSnakeCase(t *testing.T) {
 		t.Error(err)
 	}
 
-	execSnakeCase(file.Name())
+	require.NoError(t, execSnakeCase(file.Name()))
 
 	newFn, _ := os.Getwd()
 	newFn += string(os.PathSeparator) + "main_application.go"
@@ -194,7 +243,7 @@ func TestExecSnakeCaseInFolder(t *testing.T) {
 		t.Error(err)
 	}
 
-	execSnakeCase(file.Name())
+	require.NoError(t, execSnakeCase(file.Name()))
 
 	newFn := fn + string(os.PathSeparator) + "camel_case.cpp"
 	if _, err := os.Stat(newFn); os.IsNotExist(err) {
@@ -202,7 +251,7 @@ func TestExecSnakeCaseInFolder(t *testing.T) {
 	}
 }
 
-func TestExecSnakeAllFolder(t *testing.T) {
+func TestExecSnakeCaseAllFolder(t *testing.T) {
 	fn, err := os.Getwd()
 	if err != nil {
 		t.Error(err)
@@ -243,7 +292,7 @@ func TestExecSnakeAllFolder(t *testing.T) {
 		t.Error(err)
 	}
 
-	execSnakeCase(fn)
+	require.NoError(t, execSnakeCase(fn))
 
 	newFn := fn + string(os.PathSeparator) + "camel_case.cpp"
 	if _, err := os.Stat(newFn); os.IsNotExist(err) {
@@ -254,4 +303,8 @@ func TestExecSnakeAllFolder(t *testing.T) {
 	if _, err := os.Stat(newFn); os.IsNotExist(err) {
 		t.Error(err)
 	}
+}
+
+func TestExecSnakeCaseError(t *testing.T) {
+	require.Error(t, execSnakeCase(""))
 }

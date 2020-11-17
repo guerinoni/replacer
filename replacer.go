@@ -41,10 +41,9 @@ func execChangeExtension(rootDir, from, to string) error {
 	return err
 }
 
-func execChangeContains(rootDir, from, to string) {
+func execChangeContains(rootDir, from, to string) error {
 	err := filepath.Walk(rootDir, func(filename string, info os.FileInfo, err error) error {
 		if err != nil {
-			fmt.Println(err)
 			return err
 		}
 
@@ -63,15 +62,12 @@ func execChangeContains(rootDir, from, to string) {
 		return nil
 	})
 
-	if err != nil {
-		fmt.Println("error walking on ", rootDir)
-	}
+	return err
 }
 
-func execSnakeCase(rootDir string) {
+func execSnakeCase(rootDir string) error {
 	err := filepath.Walk(rootDir, func(filename string, info os.FileInfo, err error) error {
 		if err != nil {
-			fmt.Println(err)
 			return err
 		}
 
@@ -106,7 +102,5 @@ func execSnakeCase(rootDir string) {
 		return nil
 	})
 
-	if err != nil {
-		fmt.Println("error walking on ", rootDir)
-	}
+	return err
 }
