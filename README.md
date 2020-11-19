@@ -13,3 +13,13 @@ Command-line tool to rename a lot of files with some rules :)
 - [x] convert to snake_case `replacer -snake <camelCaseFile>` or `replacer -snake <folder>`
 - [ ] convert to camelCase
 - [ ] rename list of files with incremental index
+
+
+## Benchmark
+
+```
+BenchmarkExecChangeExtensionOneFile        	1000000000	         0.000045 ns/op
+BenchmarkExecChangeExtensionDir            	1000000000	         0.000603 ns/op
+BenchmarkExecChangeExtensionLotDir      	1000000000	         0.00593 ns/op
+BenchmarkExecChangeExtensionManyDir        	1000000000	         0.214 ns/op
+```
