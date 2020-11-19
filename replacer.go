@@ -5,6 +5,7 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+	"sync"
 	"unicode"
 )
 
@@ -17,6 +18,7 @@ func execChangeExtension(rootDir, from, to string) error {
 		to = "." + to
 	}
 
+	var wg sync.WaitGroup
 	err := filepath.Walk(rootDir, func(filename string, info os.FileInfo, err error) error {
 		if err != nil {
 			return err
@@ -26,18 +28,23 @@ func execChangeExtension(rootDir, from, to string) error {
 			return nil
 		}
 
-		if filepath.Ext(info.Name()) == from {
-			src := filename
-			dst := strings.TrimSuffix(src, from)
-			dst += to
-			if err := os.Rename(src, dst); err != nil {
-				fmt.Println(err)
+		wg.Add(1)
+		go func() {
+			if filepath.Ext(info.Name()) == from {
+				src := filename
+				dst := strings.TrimSuffix(src, from)
+				dst += to
+				if err := os.Rename(src, dst); err != nil {
+					fmt.Println(err)
+				}
 			}
-		}
+			wg.Done()
+		}()
 
 		return nil
 	})
 
+	wg.Wait()
 	return err
 }
 

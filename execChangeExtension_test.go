@@ -55,3 +55,9 @@ func BenchmarkExecChangeExtensionLotDir(b *testing.B) {
 	execChangeExtension(fn, ".txt", ".ttt")
 	removeNestedFolder("dir")
 }
+
+func BenchmarkExecChangeExtensionManyDir(b *testing.B) {
+	fn, _ := createNestedFoldersWithFiles("dir", "file.txt", 1000)
+	execChangeExtension(fn, ".txt", ".ttt")
+	removeNestedFolder("dir")
+}
