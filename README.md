@@ -22,4 +22,9 @@ BenchmarkExecChangeExtensionOneFile        	1000000000	         0.000045 ns/op
 BenchmarkExecChangeExtensionDir            	1000000000	         0.000603 ns/op
 BenchmarkExecChangeExtensionLotDir      	1000000000	         0.00593 ns/op
 BenchmarkExecChangeExtensionManyDir        	1000000000	         0.214 ns/op
+
+BenchmarkExecSnakeCaseOneFile            	1000000000	         0.000041 ns/op
+BenchmarkExecSnakeCaseDir                  	1000000000	         0.000644 ns/op
+BenchmarkExecSnakeCaseLotDir              	1000000000	         0.00999 ns/op
+BenchmarkExecSnakeCaseManyDir             	1000000000	         0.0402 ns/op
 ```
