@@ -82,16 +82,6 @@ func execSnakeCase(rootDir string) error {
 			return nil
 		}
 
-		fInfo, err := os.Stat(rootDir)
-		if err != nil {
-			return err
-		}
-
-		basePath := rootDir
-		if !fInfo.IsDir() {
-			basePath = filepath.Dir(rootDir)
-		}
-
 		newName := ""
 		for _, v := range info.Name() {
 			if !unicode.IsUpper(v) {
@@ -101,7 +91,8 @@ func execSnakeCase(rootDir string) error {
 			}
 		}
 
-		err = os.Rename(filename, basePath+string(os.PathSeparator)+newName)
+		newPath := strings.TrimRight(filename, info.Name())
+		err = os.Rename(filename, newPath+newName)
 		if err != nil {
 			return err
 		}

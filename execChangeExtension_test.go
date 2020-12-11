@@ -28,10 +28,11 @@ func TestExecChangeExtensionWithNameEqualExtension(t *testing.T) {
 }
 
 func TestExecChangeExtensionRecursive(t *testing.T) {
-	fn, err := createNestedFoldersWithFiles("folder", "foo.txt", 2)
+	fn, err := createNestedFoldersWithFiles("folder", "foo.txt", 10)
 	require.NoError(t, err)
+	defer removeNestedFolder("folder")
 	require.NoError(t, execChangeExtension(fn, ".txt", ".ttt"))
-	require.NoError(t, removeNestedFolder("folder"))
+	require.NoError(t, checkFileInNestedFolder("folder", "foo.ttt"))
 }
 
 func TestExecChangeExtensionError(t *testing.T) {
