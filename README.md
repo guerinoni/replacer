@@ -27,4 +27,9 @@ BenchmarkExecSnakeCaseOneFile            	1000000000	         0.000041 ns/op
 BenchmarkExecSnakeCaseDir                  	1000000000	         0.000644 ns/op
 BenchmarkExecSnakeCaseLotDir              	1000000000	         0.00999 ns/op
 BenchmarkExecSnakeCaseManyDir             	1000000000	         0.0402 ns/op
+
+BenchmarkExecChangeContainsOneFile      	1000000000	         0.000053 ns/op
+BenchmarkExecChangeContainsDir          	1000000000	         0.000784 ns/op
+BenchmarkExecChangeContainsLotDir        	1000000000	         0.00992 ns/op
+BenchmarkExecChangeContainsManyDir      	1000000000	         0.0522 ns/op
 ```
