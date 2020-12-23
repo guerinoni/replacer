@@ -35,24 +35,24 @@ func TestExecSnakeCaseError(t *testing.T) {
 
 func BenchmarkExecSnakeCaseOneFile(b *testing.B) {
 	file, _ := createFile("camelCase.cpp")
-	execSnakeCase(file.Name())
-	checkFileAndRemove("camel_case.cpp")
+	_ = execSnakeCase(file.Name())
+	_ = checkFileAndRemove("camel_case.cpp")
 }
 
 func BenchmarkExecSnakeCaseDir(b *testing.B) {
 	fn, _ := createNestedFoldersWithFiles("folder", "camelCase.cpp", 10)
 	defer removeNestedFolder("folder")
-	execSnakeCase(fn)
+	_ = execSnakeCase(fn)
 }
 
 func BenchmarkExecSnakeCaseLotDir(b *testing.B) {
 	fn, _ := createNestedFoldersWithFiles("folder", "camelCase.cpp", 100)
 	defer removeNestedFolder("folder")
-	execSnakeCase(fn)
+	_ = execSnakeCase(fn)
 }
 
 func BenchmarkExecSnakeCaseManyDir(b *testing.B) {
 	fn, _ := createNestedFoldersWithFiles("folder", "camelCase.cpp", 1000)
 	defer removeNestedFolder("folder")
-	execSnakeCase(fn)
+	_ = execSnakeCase(fn)
 }

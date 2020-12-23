@@ -41,24 +41,24 @@ func TestExecChangeExtensionError(t *testing.T) {
 
 func BenchmarkExecChangeExtensionOneFile(b *testing.B) {
 	file, _ := createFile("foo.txt")
-	execChangeExtension(file.Name(), ".txt", ".ttt")
-	checkFileAndRemove("foo.ttt")
+	_ = execChangeExtension(file.Name(), ".txt", ".ttt")
+	_ = checkFileAndRemove("foo.ttt")
 }
 
 func BenchmarkExecChangeExtensionDir(b *testing.B) {
 	fn, _ := createNestedFoldersWithFiles("dir", "file.txt", 10)
-	execChangeExtension(fn, ".txt", ".ttt")
+	_ = execChangeExtension(fn, ".txt", ".ttt")
 	removeNestedFolder("dir")
 }
 
 func BenchmarkExecChangeExtensionLotDir(b *testing.B) {
 	fn, _ := createNestedFoldersWithFiles("dir", "file.txt", 100)
-	execChangeExtension(fn, ".txt", ".ttt")
+	_ = execChangeExtension(fn, ".txt", ".ttt")
 	removeNestedFolder("dir")
 }
 
 func BenchmarkExecChangeExtensionManyDir(b *testing.B) {
 	fn, _ := createNestedFoldersWithFiles("dir", "file.txt", 1000)
-	execChangeExtension(fn, ".txt", ".ttt")
+	_ = execChangeExtension(fn, ".txt", ".ttt")
 	removeNestedFolder("dir")
 }

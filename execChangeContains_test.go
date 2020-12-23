@@ -27,24 +27,24 @@ func TestExecChangeContainsError(t *testing.T) {
 
 func BenchmarkExecChangeContainsOneFile(b *testing.B) {
 	file, _ := createFile("asdf")
-	execChangeContains(file.Name(), "sd", "ds")
-	checkFileAndRemove("adsf")
+	_ = execChangeContains(file.Name(), "sd", "ds")
+	_ = checkFileAndRemove("adsf")
 }
 
 func BenchmarkExecChangeContainsDir(b *testing.B) {
 	fn, _ := createNestedFoldersWithFiles("folder", "foo.txt", 10)
 	defer removeNestedFolder("folder")
-	execChangeContains(fn, "oo", "xx")
+	_ = execChangeContains(fn, "oo", "xx")
 }
 
 func BenchmarkExecChangeContainsLotDir(b *testing.B) {
 	fn, _ := createNestedFoldersWithFiles("folder", "foo.txt", 100)
 	defer removeNestedFolder("folder")
-	execChangeContains(fn, "oo", "xx")
+	_ = execChangeContains(fn, "oo", "xx")
 }
 
 func BenchmarkExecChangeContainsManyDir(b *testing.B) {
 	fn, _ := createNestedFoldersWithFiles("folder", "foo.txt", 1000)
 	defer removeNestedFolder("folder")
-	execChangeContains(fn, "oo", "xx")
+	_ = execChangeContains(fn, "oo", "xx")
 }
