@@ -30,6 +30,7 @@ func execChangeExtension(rootDir, from, to string) error {
 
 		wg.Add(1)
 		go func() {
+			defer wg.Done()
 			if filepath.Ext(info.Name()) == from {
 				src := filename
 				dst := strings.TrimSuffix(src, from)
@@ -38,7 +39,6 @@ func execChangeExtension(rootDir, from, to string) error {
 					fmt.Println(err)
 				}
 			}
-			wg.Done()
 		}()
 
 		return nil
@@ -61,6 +61,7 @@ func execChangeContains(rootDir, from, to string) error {
 
 		wg.Add(1)
 		go func() {
+			defer wg.Done()
 			if strings.Contains(filepath.Base(info.Name()), from) {
 				src := filename
 				dst := strings.ReplaceAll(src, from, to)
@@ -68,7 +69,6 @@ func execChangeContains(rootDir, from, to string) error {
 					fmt.Println(err)
 				}
 			}
-			wg.Done()
 		}()
 
 		return nil
