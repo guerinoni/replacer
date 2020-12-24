@@ -34,9 +34,9 @@ var snakeCmd *string
 func createFlags() {
 	flag.String("v", "", "Return version of replacer.")
 	directory = flag.String("d", "", "Specify working directory. (Required)")
-	extensionCmd = flag.String("ext", "", "Choose extension to change (<from> <to>).")
-	containsCmd = flag.String("contains", "", "Choose substr to change (<from> <to>).")
-	snakeCmd = flag.String("snake", "", "Rename all files in path specified with snake case.")
+	extensionCmd = flag.String("ext", "", "Choose extension to change <from> <to>. (i.e. replacer -d . -ext txt cpp")
+	containsCmd = flag.String("contains", "", "Choose substr to change <from> <to>. (i.e. replacer -d . -contains as ss)")
+	snakeCmd = flag.String("snake", "", "Rename all files in path specified with snake case. (i.e. replacer -snake <file/folder>)")
 }
 
 func exec(extraArgs []string) {
