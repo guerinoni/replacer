@@ -79,6 +79,7 @@ func execChangeContains(rootDir, from, to string) error {
 }
 
 func execSnakeCase(rootDir string) error {
+	var wg sync.WaitGroup
 	err := filepath.Walk(rootDir, func(filename string, info os.FileInfo, err error) error {
 		if err != nil {
 			return err
@@ -88,23 +89,25 @@ func execSnakeCase(rootDir string) error {
 			return nil
 		}
 
-		newName := ""
-		for _, v := range info.Name() {
-			if !unicode.IsUpper(v) {
-				newName += string(v)
-			} else {
-				newName += "_" + string(unicode.ToLower(v))
+		wg.Add(1)
+		go func() {
+			defer wg.Done()
+			newName := ""
+			for _, v := range info.Name() {
+				if !unicode.IsUpper(v) {
+					newName += string(v)
+				} else {
+					newName += "_" + string(unicode.ToLower(v))
+				}
 			}
-		}
 
-		newPath := strings.TrimRight(filename, info.Name())
-		err = os.Rename(filename, newPath+newName)
-		if err != nil {
-			return err
-		}
+			newPath := strings.TrimRight(filename, info.Name())
+			_ = os.Rename(filename, newPath+newName)
+		}()
 
 		return nil
 	})
 
+	wg.Wait()
 	return err
 }
