@@ -46,7 +46,7 @@ func exec(extraArgs []string) {
 		os.Exit(1)
 	}
 
-	if *snakeCmd == true {
+	if *snakeCmd {
 		err := execSnakeCase(*directory)
 		if err != nil {
 			panic(err)
