@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"flag"
 	"fmt"
 	"os"
@@ -80,6 +81,10 @@ func exec(f flags, extraArgs []string) {
 }
 
 func checkFolder(f flags) error {
+	if f.Directory == nil {
+		return errors.New("directory var is not valid")
+	}
+
 	fi, err := os.Stat(*f.Directory)
 	if fi != nil && err == nil {
 		return nil
