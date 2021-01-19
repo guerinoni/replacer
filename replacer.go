@@ -45,6 +45,7 @@ func execChangeExtension(rootDir, from, to string) error {
 	})
 
 	wg.Wait()
+
 	return err
 }
 
@@ -75,6 +76,7 @@ func execChangeContains(rootDir, from, to string) error {
 	})
 
 	wg.Wait()
+
 	return err
 }
 
@@ -113,6 +115,7 @@ func execSnakeCase(rootDir string) error {
 	})
 
 	wg.Wait()
+
 	return err
 }
 

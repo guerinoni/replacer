@@ -1,19 +1,65 @@
+run:
+  timeout: 5m
+
 linters:
   disable-all: true
   enable:
-    - goimports
-    - govet
-    - errcheck
-    - staticcheck
-    - unused
-    - gosimple
-    - structcheck
-    - varcheck
-    - ineffassign
     - deadcode
+    - errcheck
+    - gosimple
+    - govet 
+    - ineffassign
+    - staticcheck
+    - structcheck
     - typecheck
+    - unused
+    - varcheck
+    - asciicheck
+    - bodyclose
+    - depguard
+    - dogsled
+    - dupl
+    - errorlint
+    - exhaustive
+    - exhaustivestruct
+    - exportloopref
+    - funlen 
+    - gci
+    - gochecknoglobals 
+    - gochecknoinits
+    - gocognit
+    - goconst
+    - gocritic
+    - gocyclo
+    - godot 
+    - godox 
+    - gofmt 
+    - gofumpt 
+    - goheader
+    - goimports
     - golint
-
-linters-settings:
-  govet:
-    check-shadowing: true
+    - gomnd 
+    - gomodguard 
+    - gosec 
+    - interfacer
+    - lll
+    - makezero
+    - maligned
+    - misspell
+    - nakedret
+    - nestif 
+    - nlreturn 
+    - noctx
+    - nolintlint
+    - paralleltest
+    - prealloc
+    - predeclared
+    - rowserrcheck 
+    - scopelint
+    - sqlclosecheck
+    - stylecheck
+    - thelper
+    - tparallel
+    - unconvert
+    - unparam
+    - whitespace

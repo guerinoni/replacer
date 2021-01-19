@@ -7,6 +7,7 @@ import (
 )
 
 func TestExecSnakeCase(t *testing.T) {
+	t.Parallel()
 	file, err := createFile("mainApplication.go")
 	require.NoError(t, err)
 	require.NoError(t, execSnakeCase(file.Name()))
@@ -14,19 +15,21 @@ func TestExecSnakeCase(t *testing.T) {
 }
 
 func TestExecSnakeCaseInFolder(t *testing.T) {
-	fn, err := createNestedFoldersWithFiles("folder", "camelCase.cpp", 1)
+	t.Parallel()
+	fn, err := createNestedFoldersWithFiles("folder1", "camelCase.cpp", 1)
 	require.NoError(t, err)
-	defer removeNestedFolder("folder")
+	defer removeNestedFolder("folder1")
 	require.NoError(t, execSnakeCase(fn))
-	require.NoError(t, checkFileInNestedFolder("folder", "camel_case.cpp"))
+	require.NoError(t, checkFileInNestedFolder("folder1", "camel_case.cpp"))
 }
 
 func TestExecSnakeCaseAllFolder(t *testing.T) {
-	fn, err := createNestedFoldersWithFiles("folder", "camelCase.cpp", 10)
+	t.Parallel()
+	fn, err := createNestedFoldersWithFiles("folder2", "camelCase.cpp", 10)
 	require.NoError(t, err)
-	defer removeNestedFolder("folder")
+	defer removeNestedFolder("folder2")
 	require.NoError(t, execSnakeCase(fn))
-	require.NoError(t, checkFileInNestedFolder("folder", "camel_case.cpp"))
+	require.NoError(t, checkFileInNestedFolder("folder2", "camel_case.cpp"))
 }
 
 func TestExecSnakeCaseFileWithSpace(t *testing.T) {
@@ -46,28 +49,33 @@ func TestExecSnakeCaseFileWithCapitalLetter(t *testing.T) {
 }
 
 func TestExecSnakeCaseError(t *testing.T) {
+	t.Parallel()
 	require.Error(t, execSnakeCase(""))
 }
 
 func BenchmarkExecSnakeCaseOneFile(b *testing.B) {
+	_ = b
 	file, _ := createFile("camelCase.cpp")
 	_ = execSnakeCase(file.Name())
 	_ = checkFileAndRemove("camel_case.cpp")
 }
 
 func BenchmarkExecSnakeCaseDir(b *testing.B) {
+	_ = b
 	fn, _ := createNestedFoldersWithFiles("folder", "camelCase.cpp", 10)
 	defer removeNestedFolder("folder")
 	_ = execSnakeCase(fn)
 }
 
 func BenchmarkExecSnakeCaseLotDir(b *testing.B) {
+	_ = b
 	fn, _ := createNestedFoldersWithFiles("folder", "camelCase.cpp", 100)
 	defer removeNestedFolder("folder")
 	_ = execSnakeCase(fn)
 }
 
 func BenchmarkExecSnakeCaseManyDir(b *testing.B) {
+	_ = b
 	fn, _ := createNestedFoldersWithFiles("folder", "camelCase.cpp", 1000)
 	defer removeNestedFolder("folder")
 	_ = execSnakeCase(fn)
