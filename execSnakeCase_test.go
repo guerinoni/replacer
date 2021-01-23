@@ -29,6 +29,22 @@ func TestExecSnakeCaseAllFolder(t *testing.T) {
 	require.NoError(t, checkFileInNestedFolder("folder", "camel_case.cpp"))
 }
 
+func TestExecSnakeCaseFileWithSpace(t *testing.T) {
+	fn, err := createNestedFoldersWithFiles("folder", "name with spaces.go", 1)
+	require.NoError(t, err)
+	defer removeNestedFolder("folder")
+	require.NoError(t, execSnakeCase(fn))
+	require.NoError(t, checkFileInNestedFolder("folder", "name_with_spaces.go"))
+}
+
+func TestExecSnakeCaseFileWithCapitalLetter(t *testing.T) {
+	fn, err := createNestedFoldersWithFiles("folder", "CapitalLetterName.go", 1)
+	require.NoError(t, err)
+	defer removeNestedFolder("folder")
+	require.NoError(t, execSnakeCase(fn))
+	require.NoError(t, checkFileInNestedFolder("folder", "capital_letter_name.go"))
+}
+
 func TestExecSnakeCaseError(t *testing.T) {
 	require.Error(t, execSnakeCase(""))
 }
