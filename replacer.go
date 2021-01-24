@@ -93,11 +93,15 @@ func execSnakeCase(rootDir string) error {
 		go func() {
 			defer wg.Done()
 			newName := ""
-			for _, v := range info.Name() {
-				if !unicode.IsUpper(v) {
-					newName += string(v)
-				} else {
+			for i, v := range info.Name() {
+				if unicode.IsSpace(v) {
+					newName += "_"
+				} else if unicode.IsUpper(v) && i == 0 {
+					newName += string(unicode.ToLower(v))
+				} else if unicode.IsUpper(v) && i > 0 {
 					newName += "_" + string(unicode.ToLower(v))
+				} else {
+					newName += string(v)
 				}
 			}
 
