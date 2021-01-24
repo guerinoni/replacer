@@ -10,8 +10,8 @@ Command-line tool to rename a lot of files with some rules :)
 - [x] help  `replacer -h`
 - [x] change extension `replacer -d . -ext txt c` (-d = directory)
 - [x] change contains `replacer -d . -contains as ss`
-- [x] convert to snake_case `replacer -d -snake`
-- [ ] convert to camelCase
+- [x] convert to snake_case `replacer -d . -snake`
+- [x] convert to camelCase `replacer -d . -camel`
 - [ ] rename list of files with incremental index
 
 

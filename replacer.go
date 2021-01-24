@@ -115,3 +115,45 @@ func execSnakeCase(rootDir string) error {
 	wg.Wait()
 	return err
 }
+
+func execCamelCase(rootDir string) error {
+	var wg sync.WaitGroup
+	err := filepath.Walk(rootDir, func(fileName string, info os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+
+		if info.IsDir() {
+			return nil
+		}
+
+		wg.Add(1)
+		go func() {
+			defer wg.Done()
+			newName := ""
+			forceUpperNext := false
+			for i, v := range info.Name() {
+				if forceUpperNext {
+					newName += string(unicode.ToUpper(v))
+					forceUpperNext = false
+				} else if i == 0 && unicode.IsUpper(v) {
+					newName += string(unicode.ToLower(v))
+
+				} else if string(v) == "_" || string(v) == "-" || unicode.IsSpace(v) {
+					forceUpperNext = true
+
+				} else {
+					newName += string(v)
+				}
+			}
+
+			filePath := strings.TrimRight(fileName, info.Name())
+			_ = os.Rename(fileName, filePath+newName)
+		}()
+
+		return nil
+	})
+
+	wg.Wait()
+	return err
+}
