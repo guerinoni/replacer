@@ -32,4 +32,9 @@ BenchmarkExecSnakeCaseOneFile         	    1000000000	         0.000055 ns/op
 BenchmarkExecSnakeCaseDir             	    1000000000	         0.000628 ns/op
 BenchmarkExecSnakeCaseLotDir          	    1000000000	         0.00645 ns/op
 BenchmarkExecSnakeCaseManyDir         	    1000000000	         0.0408 ns/op
+
+BenchmarkExecCamelCaseOneFile               1000000000           0.000156 ns/op
+BenchmarkExecCamelCaseDir                   1000000000           0.00325 ns/op
+BenchmarkExecCamelCaseLotDir                1000000000           0.0227 ns/op
+BenchmarkExecCamelCaseManyDir               1000000000           0.167 ns/op
 ```
