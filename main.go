@@ -30,13 +30,15 @@ var directory *string
 var extensionCmd *string
 var containsCmd *string
 var snakeCmd *bool
+var camelCmd *bool
 
 func createFlags() {
 	flag.String("v", "", "Return version of replacer.")
 	directory = flag.String("d", "", "Specify working directory. (Required)")
 	extensionCmd = flag.String("ext", "", "Choose extension to change <from> <to>. (i.e. replacer -d . -ext txt cpp")
 	containsCmd = flag.String("contains", "", "Choose substr to change <from> <to>. (i.e. replacer -d . -contains as ss)")
-	snakeCmd = flag.Bool("snake", false, "Rename all files in path specified with snake case. (i.e. replacer -d . -snake)")
+	snakeCmd = flag.Bool("snake", false, "Rename all files in specified path with snake case. (i.e. replacer -d . -snake)")
+	camelCmd = flag.Bool("camel", false, "Raname all files in specified path with camel case. (i.e replacer -d . -camel)")
 }
 
 func exec(extraArgs []string) {
@@ -48,6 +50,14 @@ func exec(extraArgs []string) {
 
 	if *snakeCmd {
 		err := execSnakeCase(*directory)
+		if err != nil {
+			panic(err)
+		}
+		return
+	}
+
+	if *camelCmd {
+		err := execCamelCase(*directory)
 		if err != nil {
 			panic(err)
 		}
