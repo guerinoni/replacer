@@ -7,67 +7,77 @@ import (
 )
 
 func TestExecCamelCase(t *testing.T) {
-	file, err := createFile("main_application.go")
+	t.Parallel()
+	file, err := createFile("test_exec_camel_case.go")
 	require.NoError(t, err)
 	require.NoError(t, execCamelCase(file.Name()))
-	require.NoError(t, checkFileAndRemove("mainApplication.go"))
+	require.NoError(t, checkFileAndRemove("testExecCamelCase.go"))
 }
 
 func TestExecCamelCaseInFolder(t *testing.T) {
-	fn, err := createNestedFoldersWithFiles("folder", "snake_case.cpp", 1)
+	t.Parallel()
+	fn, err := createNestedFoldersWithFiles("TestExecCamelCaseInFolder", "snake_case.cpp", 1)
 	require.NoError(t, err)
-	defer removeNestedFolder("folder")
+	defer removeNestedFolder("TestExecCamelCaseInFolder")
 	require.NoError(t, execCamelCase(fn))
-	require.NoError(t, checkFileInNestedFolder("folder", "snakeCase.cpp"))
+	require.NoError(t, checkFileInNestedFolder("TestExecCamelCaseInFolder", "snakeCase.cpp"))
 }
 
 func TestExecCamelCaseAllFolder(t *testing.T) {
-	fn, err := createNestedFoldersWithFiles("folder", "snake_case.cpp", 10)
+	t.Parallel()
+	fn, err := createNestedFoldersWithFiles("TestExecCamelCaseAllFolder", "snake_case.cpp", 10)
 	require.NoError(t, err)
-	defer removeNestedFolder("folder")
+	defer removeNestedFolder("TestExecCamelCaseAllFolder")
 	require.NoError(t, execCamelCase(fn))
-	require.NoError(t, checkFileInNestedFolder("folder", "snakeCase.cpp"))
+	require.NoError(t, checkFileInNestedFolder("TestExecCamelCaseAllFolder", "snakeCase.cpp"))
 }
 
 func TestExecCamelCaseFileWithSpace(t *testing.T) {
-	fn, err := createNestedFoldersWithFiles("folder", "name with spaces.go", 1)
+	t.Parallel()
+	fn, err := createNestedFoldersWithFiles("TestExecCamelCaseFileWithSpace", "name with spaces.go", 1)
 	require.NoError(t, err)
-	defer removeNestedFolder("folder")
+	defer removeNestedFolder("TestExecCamelCaseFileWithSpace")
 	require.NoError(t, execCamelCase(fn))
-	require.NoError(t, checkFileInNestedFolder("folder", "nameWithSpaces.go"))
+	require.NoError(t, checkFileInNestedFolder("TestExecCamelCaseFileWithSpace", "nameWithSpaces.go"))
 }
 
 func TestExecCamelCaseFileWithCapitalLetter(t *testing.T) {
-	fn, err := createNestedFoldersWithFiles("folder", "CapitalLetterName.go", 1)
+	t.Parallel()
+	fn, err := createNestedFoldersWithFiles("TestExecCamelCaseFileWithCapitalLetter", "CapitalLetterName.go", 1)
 	require.NoError(t, err)
-	defer removeNestedFolder("folder")
+	defer removeNestedFolder("TestExecCamelCaseFileWithCapitalLetter")
 	require.NoError(t, execCamelCase(fn))
-	require.NoError(t, checkFileInNestedFolder("folder", "capitalLetterName.go"))
+	require.NoError(t, checkFileInNestedFolder("TestExecCamelCaseFileWithCapitalLetter", "capitalLetterName.go"))
 }
 
 func TestExecCamelCaseError(t *testing.T) {
+	t.Parallel()
 	require.Error(t, execCamelCase(""))
 }
 
 func BenchmarkExecCamelCaseOneFile(b *testing.B) {
+	_ = b
 	file, _ := createFile("camel_case.cpp")
 	_ = execCamelCase(file.Name())
 	_ = checkFileAndRemove("camelCase.cpp")
 }
 
 func BenchmarkExecCamelCaseDir(b *testing.B) {
+	_ = b
 	fn, _ := createNestedFoldersWithFiles("folder", "camel_case.cpp", 10)
 	defer removeNestedFolder("folder")
 	_ = execCamelCase(fn)
 }
 
 func BenchmarkExecCamelCaseLotDir(b *testing.B) {
+	_ = b
 	fn, _ := createNestedFoldersWithFiles("folder", "camel_case.cpp", 100)
 	defer removeNestedFolder("folder")
 	_ = execCamelCase(fn)
 }
 
 func BenchmarkExecCamelCaseManyDir(b *testing.B) {
+	_ = b
 	fn, _ := createNestedFoldersWithFiles("folder", "camel_case.cpp", 1000)
 	defer removeNestedFolder("folder")
 	_ = execCamelCase(fn)

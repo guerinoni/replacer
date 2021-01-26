@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"flag"
 	"fmt"
 	"os"
@@ -9,7 +10,7 @@ import (
 var version string
 
 func main() {
-	createFlags()
+	flags := createFlags()
 
 	if len(os.Args) > 1 && os.Args[1] == "-v" {
 		fmt.Println("replacer version: ", version)
@@ -23,64 +24,71 @@ func main() {
 
 	flag.Parse()
 
-	exec(flag.Args())
+	exec(flags, flag.Args())
 }
 
-var directory *string
-var extensionCmd *string
-var containsCmd *string
-var snakeCmd *bool
-var camelCmd *bool
+type flags struct {
+	Directory    *string
+	ExtensionCmd *string
+	ContainsCmd  *string
+	SnakeCmd     *bool
+	CamelCmd     *bool
+}
 
-func createFlags() {
+func createFlags() (f flags) {
 	flag.String("v", "", "Return version of replacer.")
-	directory = flag.String("d", "", "Specify working directory. (Required)")
-	extensionCmd = flag.String("ext", "", "Choose extension to change <from> <to>. (i.e. replacer -d . -ext txt cpp")
-	containsCmd = flag.String("contains", "", "Choose substr to change <from> <to>. (i.e. replacer -d . -contains as ss)")
-	snakeCmd = flag.Bool("snake", false, "Rename all files in specified path with snake case. (i.e. replacer -d . -snake)")
-	camelCmd = flag.Bool("camel", false, "Raname all files in specified path with camel case. (i.e replacer -d . -camel)")
+	f.Directory = flag.String("d", "", "Specify working directory. (Required)")
+	f.ExtensionCmd = flag.String("ext", "", "Choose extension to change <from> <to>. (i.e. replacer -d . -ext txt cpp")
+	f.ContainsCmd = flag.String("contains", "",
+		"Choose substr to change <from> <to>. (i.e. replacer -d . -contains as ss)")
+	f.SnakeCmd = flag.Bool("snake", false,
+		"Rename all files in path specified with snake case. (i.e. replacer -d . -snake)")
+	f.CamelCmd = flag.Bool("camel", false,
+		"Raname all files in specified path with camel case. (i.e replacer -d . -camel)")
+
+	return
 }
 
-func exec(extraArgs []string) {
-
-	if err := checkFolder(); err != nil {
-		fmt.Println("Folder error")
-		os.Exit(1)
-	}
-
-	if *snakeCmd {
-		err := execSnakeCase(*directory)
+func exec(f flags, extraArgs []string) {
+	if *f.SnakeCmd {
+		err := execSnakeCase(*f.Directory)
 		if err != nil {
 			panic(err)
 		}
+
 		return
 	}
 
-	if *camelCmd {
-		err := execCamelCase(*directory)
+	if *f.CamelCmd {
+		err := execCamelCase(*f.Directory)
 		if err != nil {
 			panic(err)
 		}
+
 		return
 	}
 
-	if *extensionCmd != "" {
-		err := execChangeExtension(*directory, *extensionCmd, extraArgs[0])
+	if *f.ExtensionCmd != "" {
+		err := execChangeExtension(*f.Directory, *f.ExtensionCmd, extraArgs[0])
 		if err != nil {
 			panic(err)
 		}
 	}
 
-	if *containsCmd != "" {
-		err := execChangeContains(*directory, *containsCmd, extraArgs[0])
+	if *f.ContainsCmd != "" {
+		err := execChangeContains(*f.Directory, *f.ContainsCmd, extraArgs[0])
 		if err != nil {
 			panic(err)
 		}
 	}
 }
 
-func checkFolder() error {
-	fi, err := os.Stat(*directory)
+func checkFolder(f flags) error {
+	if f.Directory == nil {
+		return errors.New("directory var is not valid")
+	}
+
+	fi, err := os.Stat(*f.Directory)
 	if fi != nil && err == nil {
 		return nil
 	}

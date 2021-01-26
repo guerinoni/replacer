@@ -37,7 +37,6 @@ func checkFileAndRemove(name string) error {
 }
 
 func createNestedFoldersWithFiles(dirName, filename string, level int) (string, error) {
-
 	fn, err := os.Getwd()
 	if err != nil {
 		return "", err

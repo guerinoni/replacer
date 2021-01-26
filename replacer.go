@@ -45,6 +45,7 @@ func execChangeExtension(rootDir, from, to string) error {
 	})
 
 	wg.Wait()
+
 	return err
 }
 
@@ -75,6 +76,7 @@ func execChangeContains(rootDir, from, to string) error {
 	})
 
 	wg.Wait()
+
 	return err
 }
 
@@ -96,10 +98,15 @@ func execSnakeCase(rootDir string) error {
 			for i, v := range info.Name() {
 				if unicode.IsSpace(v) {
 					newName += "_"
-				} else if unicode.IsUpper(v) && i == 0 {
+
+					continue
+				}
+
+				if unicode.IsUpper(v) {
+					if i > 0 {
+						newName += "_"
+					}
 					newName += string(unicode.ToLower(v))
-				} else if unicode.IsUpper(v) && i > 0 {
-					newName += "_" + string(unicode.ToLower(v))
 				} else {
 					newName += string(v)
 				}
@@ -113,6 +120,7 @@ func execSnakeCase(rootDir string) error {
 	})
 
 	wg.Wait()
+
 	return err
 }
 
@@ -136,12 +144,18 @@ func execCamelCase(rootDir string) error {
 				if forceUpperNext {
 					newName += string(unicode.ToUpper(v))
 					forceUpperNext = false
-				} else if i == 0 && unicode.IsUpper(v) {
+
+					continue
+				}
+
+				if i == 0 {
 					newName += string(unicode.ToLower(v))
 
-				} else if string(v) == "_" || string(v) == "-" || unicode.IsSpace(v) {
-					forceUpperNext = true
+					continue
+				}
 
+				if string(v) == "_" || string(v) == "-" || unicode.IsSpace(v) {
+					forceUpperNext = true
 				} else {
 					newName += string(v)
 				}
@@ -155,5 +169,6 @@ func execCamelCase(rootDir string) error {
 	})
 
 	wg.Wait()
+
 	return err
 }
