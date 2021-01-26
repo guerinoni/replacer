@@ -144,9 +144,17 @@ func execCamelCase(rootDir string) error {
 				if forceUpperNext {
 					newName += string(unicode.ToUpper(v))
 					forceUpperNext = false
-				} else if i == 0 && unicode.IsUpper(v) {
+
+					continue
+				}
+
+				if i == 0 {
 					newName += string(unicode.ToLower(v))
-				} else if string(v) == "_" || string(v) == "-" || unicode.IsSpace(v) {
+
+					continue
+				}
+
+				if string(v) == "_" || string(v) == "-" || unicode.IsSpace(v) {
 					forceUpperNext = true
 				} else {
 					newName += string(v)
