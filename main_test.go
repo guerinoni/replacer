@@ -16,6 +16,7 @@ func TestCheckFolder(t *testing.T) {
 		ExtensionCmd: nil,
 		ContainsCmd:  nil,
 		SnakeCmd:     nil,
+		CamelCmd:     nil,
 	}
 	require.NoError(t, checkFolder(f))
 

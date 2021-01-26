@@ -8,44 +8,54 @@ import (
 
 func TestExecSnakeCase(t *testing.T) {
 	t.Parallel()
-	file, err := createFile("mainApplication.go")
+	file, err := createFile("TestExecSnakeCase.go")
 	require.NoError(t, err)
 	require.NoError(t, execSnakeCase(file.Name()))
-	require.NoError(t, checkFileAndRemove("main_application.go"))
+	require.NoError(t, checkFileAndRemove("test_exec_snake_case.go"))
+}
+
+func TestExecSnakeCaseFromLower(t *testing.T) {
+	t.Parallel()
+	file, err := createFile("test exec snake case from lower.go")
+	require.NoError(t, err)
+	require.NoError(t, execSnakeCase(file.Name()))
+	require.NoError(t, checkFileAndRemove("test_exec_snake_case_from_lower.go"))
 }
 
 func TestExecSnakeCaseInFolder(t *testing.T) {
 	t.Parallel()
-	fn, err := createNestedFoldersWithFiles("folder1", "camelCase.cpp", 1)
+	fn, err := createNestedFoldersWithFiles("TestExecSnakeCaseInFolder", "camelCase.cpp", 1)
 	require.NoError(t, err)
-	defer removeNestedFolder("folder1")
+	defer removeNestedFolder("TestExecSnakeCaseInFolder")
 	require.NoError(t, execSnakeCase(fn))
-	require.NoError(t, checkFileInNestedFolder("folder1", "camel_case.cpp"))
+	require.NoError(t, checkFileInNestedFolder("TestExecSnakeCaseInFolder", "camel_case.cpp"))
 }
 
 func TestExecSnakeCaseAllFolder(t *testing.T) {
 	t.Parallel()
-	fn, err := createNestedFoldersWithFiles("folder2", "camelCase.cpp", 10)
+	fn, err := createNestedFoldersWithFiles("TestExecSnakeCaseAllFolder", "camelCase.cpp", 10)
 	require.NoError(t, err)
-	defer removeNestedFolder("folder2")
+	defer removeNestedFolder("TestExecSnakeCaseAllFolder")
 	require.NoError(t, execSnakeCase(fn))
-	require.NoError(t, checkFileInNestedFolder("folder2", "camel_case.cpp"))
+	require.NoError(t, checkFileInNestedFolder("TestExecSnakeCaseAllFolder", "camel_case.cpp"))
 }
 
 func TestExecSnakeCaseFileWithSpace(t *testing.T) {
-	fn, err := createNestedFoldersWithFiles("folder", "name with spaces.go", 1)
+	t.Parallel()
+	fn, err := createNestedFoldersWithFiles("TestExecSnakeCaseFileWithSpace", "name with spaces.go", 1)
 	require.NoError(t, err)
-	defer removeNestedFolder("folder")
+	defer removeNestedFolder("TestExecSnakeCaseFileWithSpace")
 	require.NoError(t, execSnakeCase(fn))
-	require.NoError(t, checkFileInNestedFolder("folder", "name_with_spaces.go"))
+	require.NoError(t, checkFileInNestedFolder("TestExecSnakeCaseFileWithSpace", "name_with_spaces.go"))
 }
 
 func TestExecSnakeCaseFileWithCapitalLetter(t *testing.T) {
-	fn, err := createNestedFoldersWithFiles("folder", "CapitalLetterName.go", 1)
+	t.Parallel()
+	fn, err := createNestedFoldersWithFiles("TestExecSnakeCaseFileWithCapitalLetter", "CapitalLetterName.go", 1)
 	require.NoError(t, err)
-	defer removeNestedFolder("folder")
+	defer removeNestedFolder("TestExecSnakeCaseFileWithCapitalLetter")
 	require.NoError(t, execSnakeCase(fn))
-	require.NoError(t, checkFileInNestedFolder("folder", "capital_letter_name.go"))
+	require.NoError(t, checkFileInNestedFolder("TestExecSnakeCaseFileWithCapitalLetter", "capital_letter_name.go"))
 }
 
 func TestExecSnakeCaseError(t *testing.T) {

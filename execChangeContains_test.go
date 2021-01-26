@@ -16,11 +16,11 @@ func TestExecChangeContains(t *testing.T) {
 
 func TestExecChangeContainsRecursive(t *testing.T) {
 	t.Parallel()
-	fn, err := createNestedFoldersWithFiles("folder4", "foo.txt", 5)
+	fn, err := createNestedFoldersWithFiles("TestExecChangeContainsRecursive", "foo.txt", 5)
 	require.NoError(t, err)
-	defer removeNestedFolder("folder4")
+	defer removeNestedFolder("TestExecChangeContainsRecursive")
 	require.NoError(t, execChangeContains(fn, "oo", "xx"))
-	require.NoError(t, checkFileInNestedFolder("folder4", "fxx.txt"))
+	require.NoError(t, checkFileInNestedFolder("TestExecChangeContainsRecursive", "fxx.txt"))
 }
 
 func TestExecChangeContainsError(t *testing.T) {
