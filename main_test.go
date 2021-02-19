@@ -9,7 +9,13 @@ import (
 
 func TestCheckFolder(t *testing.T) {
 	t.Parallel()
-	require.Error(t, checkFolder(flags{}))
+	require.Error(t, checkFolder(flags{
+		Directory:    nil,
+		ExtensionCmd: nil,
+		ContainsCmd:  nil,
+		SnakeCmd:     nil,
+		CamelCmd:     nil,
+	}))
 
 	here, err := os.Getwd()
 	require.NoError(t, err)

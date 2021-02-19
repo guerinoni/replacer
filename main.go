@@ -10,7 +10,7 @@ import (
 var version string
 
 func main() {
-	flags := createFlags()
+	flags := newFlags()
 
 	if len(os.Args) > 1 && os.Args[1] == "-v" {
 		fmt.Println("replacer version: ", version)
@@ -35,21 +35,25 @@ type flags struct {
 	CamelCmd     *bool
 }
 
-func createFlags() flags {
-	flag.String("v", "", "Return version of replacer.")
-	return flags{
-		Directory:    flag.String("d", "", "Specify working directory. (Required)"),
-		ExtensionCmd: flag.String("ext", "", "Choose extension to change <from> <to>. (i.e. replacer -d . -ext txt cpp"),
-		ContainsCmd: flag.String("contains", "",
-			"Choose substr to change <from> <to>. (i.e. replacer -d . -contains as ss)"),
-		SnakeCmd: flag.Bool("snake", false,
-			"Rename all files in path specified with snake case. (i.e. replacer -d . -snake)"),
-		CamelCmd: flag.Bool("camel", false,
-			"Raname all files in specified path with camel case. (i.e replacer -d . -camel)"),
+const (
+	directoryCmdDescr = "Specify working directory. (Required)"
+	extensionCmdDescr = "Choose extension to change <from> <to>. (i.e. replacer -d . -ext txt cpp"
+	containsCmdDescr  = "Choose substr to change <from> <to>. (i.e. replacer -d . -contains as ss)"
+	snakeCmdDescr     = "Rename all files in path specified with snake case. (i.e. replacer -d . -snake)"
+	camelCmdDescr     = "Raname all files in specified path with camel case. (i.e replacer -d . -camel)"
+)
+
+func newFlags() *flags {
+	return &flags{
+		Directory:    flag.String("d", "", directoryCmdDescr),
+		ExtensionCmd: flag.String("ext", "", extensionCmdDescr),
+		ContainsCmd:  flag.String("contains", "", containsCmdDescr),
+		SnakeCmd:     flag.Bool("snake", false, snakeCmdDescr),
+		CamelCmd:     flag.Bool("camel", false, camelCmdDescr),
 	}
 }
 
-func exec(f flags, extraArgs []string) {
+func exec(f *flags, extraArgs []string) {
 	if *f.SnakeCmd {
 		err := execSnakeCase(*f.Directory)
 		if err != nil {
