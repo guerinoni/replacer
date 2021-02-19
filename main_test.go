@@ -10,6 +10,8 @@ import (
 func TestCheckFolder(t *testing.T) {
 	t.Parallel()
 	require.Error(t, checkFolder(flags{
+		HelpCmd:      nil,
+		VersionCmd:   nil,
 		Directory:    nil,
 		ExtensionCmd: nil,
 		ContainsCmd:  nil,
@@ -21,6 +23,8 @@ func TestCheckFolder(t *testing.T) {
 	require.NoError(t, err)
 
 	f := flags{
+		HelpCmd:      nil,
+		VersionCmd:   nil,
 		Directory:    &here,
 		ExtensionCmd: nil,
 		ContainsCmd:  nil,

@@ -12,22 +12,14 @@ var version string
 func main() {
 	flags := newFlags()
 
-	if len(os.Args) > 1 && os.Args[1] == "-v" {
-		fmt.Println("replacer version: ", version)
-		os.Exit(0)
-	}
-
-	if len(os.Args) == 1 {
-		flag.PrintDefaults()
-		os.Exit(0)
-	}
-
 	flag.Parse()
 
 	exec(flags, flag.Args())
 }
 
 type flags struct {
+	HelpCmd      *bool
+	VersionCmd   *bool
 	Directory    *string
 	ExtensionCmd *string
 	ContainsCmd  *string
@@ -45,6 +37,8 @@ const (
 
 func newFlags() *flags {
 	return &flags{
+		HelpCmd:      flag.Bool("h", false, "Print all options available."),
+		VersionCmd:   flag.Bool("v", false, "Return version of replacer."),
 		Directory:    flag.String("d", "", directoryCmdDescr),
 		ExtensionCmd: flag.String("ext", "", extensionCmdDescr),
 		ContainsCmd:  flag.String("contains", "", containsCmdDescr),
@@ -54,6 +48,18 @@ func newFlags() *flags {
 }
 
 func exec(f *flags, extraArgs []string) {
+	if *f.VersionCmd {
+		fmt.Println("replacer version: ", version)
+
+		return
+	}
+
+	if *f.HelpCmd {
+		flag.PrintDefaults()
+
+		return
+	}
+
 	if *f.SnakeCmd {
 		err := execSnakeCase(*f.Directory)
 		if err != nil {
