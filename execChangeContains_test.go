@@ -29,29 +29,33 @@ func TestExecChangeContainsError(t *testing.T) {
 }
 
 func BenchmarkExecChangeContainsOneFile(b *testing.B) {
-	_ = b
-	file, _ := createFile("asdf")
-	_ = execChangeContains(file.Name(), "sd", "ds")
-	_ = checkFileAndRemove("adsf")
+	for i := 0; i < b.N; i++ {
+		file, _ := createFile("asdf")
+		_ = execChangeContains(file.Name(), "sd", "ds")
+		_ = checkFileAndRemove("adsf")
+	}
 }
 
 func BenchmarkExecChangeContainsDir(b *testing.B) {
-	_ = b
-	fn, _ := createNestedFoldersWithFiles("folder", "foo.txt", 10)
-	defer removeNestedFolder("folder")
-	_ = execChangeContains(fn, "oo", "xx")
+	for i := 0; i < b.N; i++ {
+		fn, _ := createNestedFoldersWithFiles("folder", "foo.txt", 10)
+		_ = execChangeContains(fn, "oo", "xx")
+		removeNestedFolder("folder")
+	}
 }
 
 func BenchmarkExecChangeContainsLotDir(b *testing.B) {
-	_ = b
-	fn, _ := createNestedFoldersWithFiles("folder", "foo.txt", 100)
-	defer removeNestedFolder("folder")
-	_ = execChangeContains(fn, "oo", "xx")
+	for i := 0; i < b.N; i++ {
+		fn, _ := createNestedFoldersWithFiles("folder", "foo.txt", 100)
+		_ = execChangeContains(fn, "oo", "xx")
+		removeNestedFolder("folder")
+	}
 }
 
 func BenchmarkExecChangeContainsManyDir(b *testing.B) {
-	_ = b
-	fn, _ := createNestedFoldersWithFiles("folder", "foo.txt", 1000)
-	defer removeNestedFolder("folder")
-	_ = execChangeContains(fn, "oo", "xx")
+	for i := 0; i < b.N; i++ {
+		fn, _ := createNestedFoldersWithFiles("folder", "foo.txt", 1000)
+		_ = execChangeContains(fn, "oo", "xx")
+		removeNestedFolder("folder")
+	}
 }

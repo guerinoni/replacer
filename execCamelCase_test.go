@@ -56,29 +56,33 @@ func TestExecCamelCaseError(t *testing.T) {
 }
 
 func BenchmarkExecCamelCaseOneFile(b *testing.B) {
-	_ = b
-	file, _ := createFile("camel_case.cpp")
-	_ = execCamelCase(file.Name())
-	_ = checkFileAndRemove("camelCase.cpp")
+	for i := 0; i < b.N; i++ {
+		file, _ := createFile("camel_case.cpp")
+		_ = execCamelCase(file.Name())
+		_ = checkFileAndRemove("camelCase.cpp")
+	}
 }
 
 func BenchmarkExecCamelCaseDir(b *testing.B) {
-	_ = b
-	fn, _ := createNestedFoldersWithFiles("folder", "camel_case.cpp", 10)
-	defer removeNestedFolder("folder")
-	_ = execCamelCase(fn)
+	for i := 0; i < b.N; i++ {
+		fn, _ := createNestedFoldersWithFiles("folder", "camel_case.cpp", 10)
+		_ = execCamelCase(fn)
+		removeNestedFolder("folder")
+	}
 }
 
 func BenchmarkExecCamelCaseLotDir(b *testing.B) {
-	_ = b
-	fn, _ := createNestedFoldersWithFiles("folder", "camel_case.cpp", 100)
-	defer removeNestedFolder("folder")
-	_ = execCamelCase(fn)
+	for i := 0; i < b.N; i++ {
+		fn, _ := createNestedFoldersWithFiles("folder", "camel_case.cpp", 100)
+		_ = execCamelCase(fn)
+		removeNestedFolder("folder")
+	}
 }
 
 func BenchmarkExecCamelCaseManyDir(b *testing.B) {
-	_ = b
-	fn, _ := createNestedFoldersWithFiles("folder", "camel_case.cpp", 1000)
-	defer removeNestedFolder("folder")
-	_ = execCamelCase(fn)
+	for i := 0; i < b.N; i++ {
+		fn, _ := createNestedFoldersWithFiles("folder", "camel_case.cpp", 1000)
+		_ = execCamelCase(fn)
+		removeNestedFolder("folder")
+	}
 }

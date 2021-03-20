@@ -45,29 +45,33 @@ func TestExecChangeExtensionError(t *testing.T) {
 }
 
 func BenchmarkExecChangeExtensionOneFile(b *testing.B) {
-	_ = b
-	file, _ := createFile("foo.txt")
-	_ = execChangeExtension(file.Name(), ".txt", ".ttt")
-	_ = checkFileAndRemove("foo.ttt")
+	for i := 0; i < b.N; i++ {
+		file, _ := createFile("foo.txt")
+		_ = execChangeExtension(file.Name(), ".txt", ".ttt")
+		_ = checkFileAndRemove("foo.ttt")
+	}
 }
 
 func BenchmarkExecChangeExtensionDir(b *testing.B) {
-	_ = b
-	fn, _ := createNestedFoldersWithFiles("dir", "file.txt", 10)
-	_ = execChangeExtension(fn, ".txt", ".ttt")
-	removeNestedFolder("dir")
+	for i := 0; i < b.N; i++ {
+		fn, _ := createNestedFoldersWithFiles("dir", "file.txt", 10)
+		_ = execChangeExtension(fn, ".txt", ".ttt")
+		removeNestedFolder("dir")
+	}
 }
 
 func BenchmarkExecChangeExtensionLotDir(b *testing.B) {
-	_ = b
-	fn, _ := createNestedFoldersWithFiles("dir", "file.txt", 100)
-	_ = execChangeExtension(fn, ".txt", ".ttt")
-	removeNestedFolder("dir")
+	for i := 0; i < b.N; i++ {
+		fn, _ := createNestedFoldersWithFiles("dir", "file.txt", 100)
+		_ = execChangeExtension(fn, ".txt", ".ttt")
+		removeNestedFolder("dir")
+	}
 }
 
 func BenchmarkExecChangeExtensionManyDir(b *testing.B) {
-	_ = b
-	fn, _ := createNestedFoldersWithFiles("dir", "file.txt", 1000)
-	_ = execChangeExtension(fn, ".txt", ".ttt")
-	removeNestedFolder("dir")
+	for i := 0; i < b.N; i++ {
+		fn, _ := createNestedFoldersWithFiles("dir", "file.txt", 1000)
+		_ = execChangeExtension(fn, ".txt", ".ttt")
+		removeNestedFolder("dir")
+	}
 }
