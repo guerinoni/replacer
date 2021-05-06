@@ -1,10 +1,8 @@
 package main
 
 import (
-	"errors"
 	"flag"
 	"fmt"
-	"os"
 )
 
 var version string
@@ -14,7 +12,10 @@ func main() {
 
 	flag.Parse()
 
-	exec(flags, flag.Args())
+	err := exec(flags, flag.Args())
+	if err != nil {
+		fmt.Println(err)
+	}
 }
 
 type flags struct {
@@ -47,61 +48,48 @@ func newFlags() *flags {
 	}
 }
 
-func exec(f *flags, extraArgs []string) {
+func exec(f *flags, extraArgs []string) error {
 	if *f.VersionCmd {
 		fmt.Println("replacer version: ", version)
 
-		return
+		return nil
 	}
 
 	if *f.HelpCmd {
 		flag.PrintDefaults()
 
-		return
+		return nil
+	}
+
+	if *f.Directory == "" {
+		fmt.Println("missing -d <folder>")
+
+		return nil
 	}
 
 	if *f.SnakeCmd {
 		err := execSnakeCase(*f.Directory)
-		if err != nil {
-			panic(err)
-		}
 
-		return
+		return err
 	}
 
 	if *f.CamelCmd {
 		err := execCamelCase(*f.Directory)
-		if err != nil {
-			panic(err)
-		}
 
-		return
+		return err
 	}
 
 	if *f.ExtensionCmd != "" {
 		err := execChangeExtension(*f.Directory, *f.ExtensionCmd, extraArgs[0])
-		if err != nil {
-			panic(err)
-		}
+
+		return err
 	}
 
 	if *f.ContainsCmd != "" {
 		err := execChangeContains(*f.Directory, *f.ContainsCmd, extraArgs[0])
-		if err != nil {
-			panic(err)
-		}
-	}
-}
 
-func checkFolder(f flags) error {
-	if f.Directory == nil {
-		return errors.New("directory var is not valid")
+		return err
 	}
 
-	fi, err := os.Stat(*f.Directory)
-	if fi != nil && err == nil {
-		return nil
-	}
-
-	return err
+	return nil
 }
