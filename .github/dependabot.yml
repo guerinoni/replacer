@@ -6,3 +6,9 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+
+  # Maintain dependencies for go modules
+  - package-ecosystem: "gomod"
+    directory: "/"
+    schedule:
+      interval: "weekly"
