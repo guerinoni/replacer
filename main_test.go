@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"os"
 	"testing"
 
@@ -8,22 +9,25 @@ import (
 )
 
 type testCaseExec struct {
-	name  string
-	f     flags
-	extra []string
+	name   string
+	f      flags
+	extra  []string
+	expErr error
 }
 
-func makeTestCaseExec(name string, extraArgs []string, f flags) testCaseExec {
+func makeTestCaseExec(name string, extraArgs []string, f flags, err error) testCaseExec {
 	return testCaseExec{
-		name:  name,
-		extra: extraArgs,
-		f:     f,
+		name:   name,
+		extra:  extraArgs,
+		f:      f,
+		expErr: err,
 	}
 }
 
 //nolint:funlen
 func TestExec(t *testing.T) {
 	t.Parallel()
+
 	tmpDir := func() *string {
 		tmp, err := os.MkdirTemp(os.TempDir(), "fake")
 		require.NoError(t, err)
@@ -52,7 +56,7 @@ func TestExec(t *testing.T) {
 			ContainsCmd:  new(string),
 			SnakeCmd:     new(bool),
 			CamelCmd:     new(bool),
-		}),
+		}, nil),
 
 		makeTestCaseExec("suggestion of dir missing", []string{}, flags{
 			HelpCmd:      new(bool),
@@ -62,7 +66,7 @@ func TestExec(t *testing.T) {
 			ContainsCmd:  new(string),
 			SnakeCmd:     new(bool),
 			CamelCmd:     new(bool),
-		}),
+		}, errors.New("error: missing -d <folder>")),
 
 		makeTestCaseExec("version", []string{}, flags{
 			HelpCmd:      new(bool),
@@ -72,7 +76,7 @@ func TestExec(t *testing.T) {
 			ContainsCmd:  new(string),
 			SnakeCmd:     new(bool),
 			CamelCmd:     new(bool),
-		}),
+		}, nil),
 
 		makeTestCaseExec("help", []string{}, flags{
 			HelpCmd:      newBool(),
@@ -82,7 +86,7 @@ func TestExec(t *testing.T) {
 			ContainsCmd:  new(string),
 			SnakeCmd:     new(bool),
 			CamelCmd:     new(bool),
-		}),
+		}, nil),
 
 		makeTestCaseExec("snake", []string{}, flags{
 			HelpCmd:      new(bool),
@@ -92,7 +96,7 @@ func TestExec(t *testing.T) {
 			ContainsCmd:  new(string),
 			SnakeCmd:     newBool(),
 			CamelCmd:     new(bool),
-		}),
+		}, nil),
 
 		makeTestCaseExec("camel", []string{}, flags{
 			HelpCmd:      new(bool),
@@ -102,7 +106,7 @@ func TestExec(t *testing.T) {
 			ContainsCmd:  new(string),
 			SnakeCmd:     new(bool),
 			CamelCmd:     newBool(),
-		}),
+		}, nil),
 
 		makeTestCaseExec("extension", []string{"txt"}, flags{
 			HelpCmd:      new(bool),
@@ -112,7 +116,7 @@ func TestExec(t *testing.T) {
 			ContainsCmd:  new(string),
 			SnakeCmd:     new(bool),
 			CamelCmd:     new(bool),
-		}),
+		}, nil),
 
 		makeTestCaseExec("extension", []string{"txt"}, flags{
 			HelpCmd:      new(bool),
@@ -122,7 +126,7 @@ func TestExec(t *testing.T) {
 			ContainsCmd:  newString(),
 			SnakeCmd:     new(bool),
 			CamelCmd:     new(bool),
-		}),
+		}, nil),
 	}
 
 	for _, tt := range testCases {
@@ -130,7 +134,7 @@ func TestExec(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
 			err := exec(&tt.f, tt.extra)
-			require.NoError(t, err)
+			require.Equal(t, tt.expErr, err)
 		})
 	}
 }

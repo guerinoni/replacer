@@ -1,7 +1,7 @@
 package main
 
 import (
-	"errors"
+	"fmt"
 	"os"
 	"path/filepath"
 )
@@ -10,13 +10,14 @@ func createFile(name string) (*os.File, error) {
 	fn, _ := os.Getwd()
 	fn += string(os.PathSeparator) + name
 	file, err := os.Create(fn)
+
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to create file: %w", err)
 	}
 
 	err = file.Close()
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to close file: %w", err)
 	}
 
 	return file, nil
@@ -25,38 +26,50 @@ func createFile(name string) (*os.File, error) {
 func checkFileAndRemove(name string) error {
 	newFn, err := os.Getwd()
 	if err != nil {
-		return err
-	}
-	newFn += string(os.PathSeparator) + name
-	_, err = os.Stat(newFn)
-	if err != nil {
-		return err
+		return fmt.Errorf("failed to get current dir: %w", err)
 	}
 
-	return os.Remove(newFn)
+	newFn += string(os.PathSeparator) + name
+	_, err = os.Stat(newFn)
+
+	if err != nil {
+		return fmt.Errorf("failed check info of file: %w", err)
+	}
+
+	err = os.Remove(newFn)
+	if err != nil {
+		return fmt.Errorf("failed remove file: %w", err)
+	}
+
+	return nil
 }
 
 func createNestedFoldersWithFiles(dirName, filename string, level int) (string, error) {
 	fn, err := os.Getwd()
 	if err != nil {
-		return "", err
+		return "", fmt.Errorf("failed to insert user: %w", err)
 	}
 
 	incrementalFn := fn
 	for i := 0; i < level; i++ {
 		incrementalFn += string(os.PathSeparator) + dirName
-		err = os.Mkdir(incrementalFn, 0755)
+		err = os.Mkdir(incrementalFn, 0o755)
+
 		if err != nil {
-			return "", err
+			return "", fmt.Errorf("failed to make dir: %w", err)
 		}
+
 		f := incrementalFn + string(os.PathSeparator) + filename
 		file, err := os.Create(f)
+
 		if err != nil {
-			return "", err
+			return "", fmt.Errorf("failed to create file: %w", err)
 		}
+
 		err = file.Close()
+
 		if err != nil {
-			return "", err
+			return "", fmt.Errorf("failed to close file: %w", err)
 		}
 	}
 
@@ -73,7 +86,7 @@ func removeNestedFolder(dirName string) {
 }
 
 func checkFileInNestedFolder(dir, file string) error {
-	return filepath.Walk(dir, func(filename string, info os.FileInfo, err error) error {
+	err := filepath.Walk(dir, func(filename string, info os.FileInfo, err error) error {
 		if err != nil {
 			return err
 		}
@@ -83,9 +96,15 @@ func checkFileInNestedFolder(dir, file string) error {
 		}
 
 		if info.Name() != file {
-			return errors.New("File not found")
+			return fmt.Errorf("file not found: %s", file)
 		}
 
 		return nil
 	})
+
+	if err != nil {
+		return fmt.Errorf("failed to walk path: %w", err)
+	}
+
+	return nil
 }

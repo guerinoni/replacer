@@ -1,8 +1,10 @@
 package main
 
 import (
+	"errors"
 	"flag"
 	"fmt"
+	"os"
 )
 
 var version string
@@ -14,7 +16,7 @@ func main() {
 
 	err := exec(flags, flag.Args())
 	if err != nil {
-		fmt.Println(err)
+		fmt.Fprintf(os.Stderr, "error: %s", err)
 	}
 }
 
@@ -50,7 +52,7 @@ func newFlags() *flags {
 
 func exec(f *flags, extraArgs []string) error {
 	if *f.VersionCmd {
-		fmt.Println("replacer version: ", version)
+		fmt.Fprintf(os.Stdout, "replacer version: %s", version)
 
 		return nil
 	}
@@ -62,9 +64,7 @@ func exec(f *flags, extraArgs []string) error {
 	}
 
 	if *f.Directory == "" {
-		fmt.Println("missing -d <folder>")
-
-		return nil
+		return errors.New("error: missing -d <folder>")
 	}
 
 	if *f.SnakeCmd {

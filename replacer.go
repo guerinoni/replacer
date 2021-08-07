@@ -19,6 +19,7 @@ func execChangeExtension(rootDir, from, to string) error {
 	}
 
 	var wg sync.WaitGroup
+
 	err := filepath.Walk(rootDir, func(filename string, info os.FileInfo, err error) error {
 		if err != nil {
 			return err
@@ -36,7 +37,7 @@ func execChangeExtension(rootDir, from, to string) error {
 				dst := strings.TrimSuffix(src, from)
 				dst += to
 				if err := os.Rename(src, dst); err != nil {
-					fmt.Println(err)
+					fmt.Fprintf(os.Stderr, "error: %s", err)
 				}
 			}
 		}()
@@ -46,11 +47,16 @@ func execChangeExtension(rootDir, from, to string) error {
 
 	wg.Wait()
 
-	return err
+	if err != nil {
+		return fmt.Errorf("failed to walk path: %w", err)
+	}
+
+	return nil
 }
 
 func execChangeContains(rootDir, from, to string) error {
 	var wg sync.WaitGroup
+
 	err := filepath.Walk(rootDir, func(filename string, info os.FileInfo, err error) error {
 		if err != nil {
 			return err
@@ -67,7 +73,7 @@ func execChangeContains(rootDir, from, to string) error {
 				src := filename
 				dst := strings.ReplaceAll(src, from, to)
 				if err := os.Rename(src, dst); err != nil {
-					fmt.Println(err)
+					fmt.Fprintf(os.Stderr, "error: %s", err)
 				}
 			}
 		}()
@@ -77,11 +83,16 @@ func execChangeContains(rootDir, from, to string) error {
 
 	wg.Wait()
 
-	return err
+	if err != nil {
+		return fmt.Errorf("failed to walk path: %w", err)
+	}
+
+	return nil
 }
 
 func execSnakeCase(rootDir string) error {
 	var wg sync.WaitGroup
+
 	err := filepath.Walk(rootDir, func(filename string, info os.FileInfo, err error) error {
 		if err != nil {
 			return err
@@ -121,11 +132,16 @@ func execSnakeCase(rootDir string) error {
 
 	wg.Wait()
 
-	return err
+	if err != nil {
+		return fmt.Errorf("failed to walk path: %w", err)
+	}
+
+	return nil
 }
 
 func execCamelCase(rootDir string) error {
 	var wg sync.WaitGroup
+
 	err := filepath.Walk(rootDir, func(fileName string, info os.FileInfo, err error) error {
 		if err != nil {
 			return err
@@ -170,5 +186,9 @@ func execCamelCase(rootDir string) error {
 
 	wg.Wait()
 
-	return err
+	if err != nil {
+		return fmt.Errorf("failed to walk path: %w", err)
+	}
+
+	return nil
 }
