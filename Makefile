@@ -4,7 +4,7 @@ build:
 	go build
 
 test:
-	go test -race ./...
+	go test -race -shuffle on ./...
 
 bench:
 	go test -bench=. -benchmem
