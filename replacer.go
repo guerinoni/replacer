@@ -20,7 +20,7 @@ func execChangeExtension(rootDir, from, to string) error {
 
 	var wg sync.WaitGroup
 
-	err := filepath.Walk(rootDir, func(filename string, info os.FileInfo, err error) error {
+	err := filepath.WalkDir(rootDir, func(filename string, info os.DirEntry, err error) error {
 		if err != nil {
 			return err
 		}
@@ -57,7 +57,7 @@ func execChangeExtension(rootDir, from, to string) error {
 func execChangeContains(rootDir, from, to string) error {
 	var wg sync.WaitGroup
 
-	err := filepath.Walk(rootDir, func(filename string, info os.FileInfo, err error) error {
+	err := filepath.WalkDir(rootDir, func(filename string, info os.DirEntry, err error) error {
 		if err != nil {
 			return err
 		}
@@ -93,7 +93,7 @@ func execChangeContains(rootDir, from, to string) error {
 func execSnakeCase(rootDir string) error {
 	var wg sync.WaitGroup
 
-	err := filepath.Walk(rootDir, func(filename string, info os.FileInfo, err error) error {
+	err := filepath.WalkDir(rootDir, func(filename string, info os.DirEntry, err error) error {
 		if err != nil {
 			return err
 		}
@@ -142,7 +142,7 @@ func execSnakeCase(rootDir string) error {
 func execCamelCase(rootDir string) error {
 	var wg sync.WaitGroup
 
-	err := filepath.Walk(rootDir, func(fileName string, info os.FileInfo, err error) error {
+	err := filepath.WalkDir(rootDir, func(fileName string, info os.DirEntry, err error) error {
 		if err != nil {
 			return err
 		}
