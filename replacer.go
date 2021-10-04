@@ -33,10 +33,7 @@ func execChangeExtension(rootDir, from, to string) error {
 		go func() {
 			defer wg.Done()
 			if filepath.Ext(info.Name()) == from {
-				src := filename
-				dst := strings.TrimSuffix(src, from)
-				dst += to
-				if err := os.Rename(src, dst); err != nil {
+				if err := os.Rename(filename, filename[0:len(filename)-len(from)]+to); err != nil {
 					fmt.Fprintf(os.Stderr, "error: %s", err)
 				}
 			}
@@ -69,7 +66,7 @@ func execChangeContains(rootDir, from, to string) error {
 		wg.Add(1)
 		go func() {
 			defer wg.Done()
-			if strings.Contains(filepath.Base(info.Name()), from) {
+			if strings.Contains(info.Name(), from) {
 				src := filename
 				dst := strings.ReplaceAll(src, from, to)
 				if err := os.Rename(src, dst); err != nil {
@@ -105,26 +102,36 @@ func execSnakeCase(rootDir string) error {
 		wg.Add(1)
 		go func() {
 			defer wg.Done()
-			newName := ""
-			for i, v := range info.Name() {
+			uppers := 0
+			relativeName := info.Name()
+			for i, v := range relativeName {
+				if i > 0 && unicode.IsUpper(v) {
+					uppers++
+				}
+			}
+			res := make([]byte, len(filename)+uppers)
+			copy(res, filename[0:len(filename)-len(relativeName)])
+			ptr := len(filename) - len(relativeName)
+			for i, v := range relativeName {
 				if unicode.IsSpace(v) {
-					newName += "_"
-
+					res[ptr] = '_'
+					ptr++
 					continue
 				}
 
 				if unicode.IsUpper(v) {
 					if i > 0 {
-						newName += "_"
+						res[ptr] = '_'
+						ptr++
 					}
-					newName += string(unicode.ToLower(v))
+					res[ptr] = byte(unicode.ToLower(v))
+					ptr++
 				} else {
-					newName += string(v)
+					res[ptr] = byte(v)
+					ptr++
 				}
 			}
-
-			newPath := strings.TrimRight(filename, info.Name())
-			_ = os.Rename(filename, newPath+newName)
+			_ = os.Rename(filename, string(res))
 		}()
 
 		return nil
@@ -154,31 +161,42 @@ func execCamelCase(rootDir string) error {
 		wg.Add(1)
 		go func() {
 			defer wg.Done()
-			newName := ""
 			forceUpperNext := false
-			for i, v := range info.Name() {
-				if forceUpperNext {
-					newName += string(unicode.ToUpper(v))
-					forceUpperNext = false
 
+			removed := 0
+			relativeName := info.Name()
+			for _, v := range relativeName {
+				if v == '_' || v == '-' || unicode.IsSpace(v) {
+					removed++
+				}
+			}
+
+			res := make([]byte, len(fileName)-removed)
+			ptr := len(fileName) - len(relativeName)
+			copy(res, fileName[0:ptr])
+
+			for i, v := range relativeName {
+				if forceUpperNext {
+					res[ptr] = byte(unicode.ToUpper(v))
+					ptr++
+					forceUpperNext = false
 					continue
 				}
 
 				if i == 0 {
-					newName += string(unicode.ToLower(v))
-
+					res[ptr] = byte(unicode.ToLower(v))
+					ptr++
 					continue
 				}
 
-				if string(v) == "_" || string(v) == "-" || unicode.IsSpace(v) {
+				if v == '_' || v == '-' || unicode.IsSpace(v) {
 					forceUpperNext = true
 				} else {
-					newName += string(v)
+					res[ptr] = byte(v)
+					ptr++
 				}
 			}
-
-			filePath := strings.TrimRight(fileName, info.Name())
-			_ = os.Rename(fileName, filePath+newName)
+			_ = os.Rename(fileName, string(res))
 		}()
 
 		return nil
