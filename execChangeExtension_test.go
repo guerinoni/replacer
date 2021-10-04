@@ -40,6 +40,13 @@ func TestExecChangeExtensionError(t *testing.T) {
 	require.Error(t, execChangeExtension("", ".txt", ".ttt"))
 }
 
+func TestExecChangeExtensionWithSpaces(t *testing.T) {
+	file, err := createFile(" foo bar .txt")
+	require.NoError(t, err)
+	require.NoError(t, execChangeExtension(file.Name(), ".txt", ".ttt"))
+	require.NoError(t, checkFileAndRemove(" foo bar .ttt"))
+}
+
 func BenchmarkExecChangeExtensionOneFile(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		file, _ := createFile("foo.txt")
