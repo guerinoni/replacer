@@ -87,6 +87,18 @@ func execChangeContains(rootDir, from, to string) error {
 	return nil
 }
 
+func countUpperCase(str string) int {
+	uppers := 0
+
+	for i, v := range str {
+		if i > 0 && unicode.IsUpper(v) {
+			uppers++
+		}
+	}
+
+	return uppers
+}
+
 func execSnakeCase(rootDir string) error {
 	var wg sync.WaitGroup
 
@@ -102,13 +114,8 @@ func execSnakeCase(rootDir string) error {
 		wg.Add(1)
 		go func() {
 			defer wg.Done()
-			uppers := 0
 			relativeName := info.Name()
-			for i, v := range relativeName {
-				if i > 0 && unicode.IsUpper(v) {
-					uppers++
-				}
-			}
+			uppers := countUpperCase(relativeName)
 			res := make([]byte, len(filename)+uppers)
 			copy(res, filename[0:len(filename)-len(relativeName)])
 			ptr := len(filename) - len(relativeName)
@@ -116,6 +123,7 @@ func execSnakeCase(rootDir string) error {
 				if unicode.IsSpace(v) {
 					res[ptr] = '_'
 					ptr++
+
 					continue
 				}
 
@@ -146,6 +154,18 @@ func execSnakeCase(rootDir string) error {
 	return nil
 }
 
+func countCamelCaseSeps(str string) int {
+	separators := 0
+
+	for _, v := range str {
+		if v == '_' || v == '-' || unicode.IsSpace(v) {
+			separators++
+		}
+	}
+
+	return separators
+}
+
 func execCamelCase(rootDir string) error {
 	var wg sync.WaitGroup
 
@@ -163,13 +183,8 @@ func execCamelCase(rootDir string) error {
 			defer wg.Done()
 			forceUpperNext := false
 
-			removed := 0
 			relativeName := info.Name()
-			for _, v := range relativeName {
-				if v == '_' || v == '-' || unicode.IsSpace(v) {
-					removed++
-				}
-			}
+			removed := countCamelCaseSeps(relativeName)
 
 			res := make([]byte, len(fileName)-removed)
 			ptr := len(fileName) - len(relativeName)
@@ -180,12 +195,14 @@ func execCamelCase(rootDir string) error {
 					res[ptr] = byte(unicode.ToUpper(v))
 					ptr++
 					forceUpperNext = false
+
 					continue
 				}
 
 				if i == 0 {
 					res[ptr] = byte(unicode.ToLower(v))
 					ptr++
+
 					continue
 				}
 
