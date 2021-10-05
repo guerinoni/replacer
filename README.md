@@ -24,22 +24,22 @@ goos: linux
 goarch: amd64
 pkg: github.com/guerinoni/replacer
 cpu: Intel(R) Core(TM) i7-8565U CPU @ 1.80GHz
-BenchmarkExecCamelCaseOneFile-8         	   43515	     27391 ns/op	    2392 B/op	      52 allocs/op
-BenchmarkExecCamelCaseDir-8             	    2485	    480512 ns/op	  191411 B/op	     692 allocs/op
-BenchmarkExecCamelCaseLotDir-8          	     186	   5843872 ns/op	 2327337 B/op	    6812 allocs/op
-BenchmarkExecCamelCaseManyDir-8         	      30	  35512414 ns/op	10069383 B/op	   11014 allocs/op
-BenchmarkExecChangeContainsOneFile-8    	   45991	     26119 ns/op	    2168 B/op	      25 allocs/op
-BenchmarkExecChangeContainsDir-8        	    2462	    543166 ns/op	  188296 B/op	     422 allocs/op
-BenchmarkExecChangeContainsLotDir-8     	     195	   5716483 ns/op	 2297134 B/op	    4112 allocs/op
-BenchmarkExecChangeContainsManyDir-8    	      32	  36024406 ns/op	10076980 B/op	   11033 allocs/op
-BenchmarkExecChangeExtensionOneFile-8   	   47062	     26028 ns/op	    2168 B/op	      25 allocs/op
-BenchmarkExecChangeExtensionDir-8       	    2478	    497402 ns/op	  185996 B/op	     422 allocs/op
-BenchmarkExecChangeExtensionLotDir-8    	     207	   5899122 ns/op	 2088637 B/op	    4112 allocs/op
-BenchmarkExecChangeExtensionManyDir-8   	       6	 177506436 ns/op	45918349 B/op	   41012 allocs/op
-BenchmarkExecSnakeCaseOneFile-8         	   40345	     27524 ns/op	    2408 B/op	      53 allocs/op
-BenchmarkExecSnakeCaseDir-8             	  230889	      6525 ns/op	    1602 B/op	      20 allocs/op
-BenchmarkExecSnakeCaseLotDir-8          	     216	   5691752 ns/op	 2327114 B/op	    6912 allocs/op
-BenchmarkExecSnakeCaseManyDir-8         	      31	  38836712 ns/op	10068742 B/op	   11014 allocs/op
+BenchmarkExecCamelCaseOneFile-8         	   14736	     71699 ns/op	    2280 B/op	      28 allocs/op
+BenchmarkExecCamelCaseDir-8             	    1078	   1268006 ns/op	   22503 B/op	     422 allocs/op
+BenchmarkExecCamelCaseLotDir-8          	      55	  20024731 ns/op	  611971 B/op	    4122 allocs/op
+BenchmarkExecCamelCaseManyDir-8         	      15	  74275259 ns/op	 6993296 B/op	   10864 allocs/op
+BenchmarkExecChangeContainsOneFile-8    	   14798	     82463 ns/op	    2264 B/op	      27 allocs/op
+BenchmarkExecChangeContainsDir-8        	     956	   1163330 ns/op	   21177 B/op	     412 allocs/op
+BenchmarkExecChangeContainsLotDir-8     	      68	  18553358 ns/op	  568569 B/op	    4024 allocs/op
+BenchmarkExecChangeContainsManyDir-8    	      13	  81944776 ns/op	 6180158 B/op	   10684 allocs/op
+BenchmarkExecChangeExtensionOneFile-8   	   16408	     69426 ns/op	    2264 B/op	      27 allocs/op
+BenchmarkExecChangeExtensionDir-8       	    1114	   1763960 ns/op	   19175 B/op	     412 allocs/op
+BenchmarkExecChangeExtensionLotDir-8    	      74	  13857763 ns/op	  389218 B/op	    4021 allocs/op
+BenchmarkExecChangeExtensionManyDir-8   	       4	 341479902 ns/op	33262900 B/op	   42103 allocs/op
+BenchmarkExecSnakeCaseOneFile-8         	   15810	     71889 ns/op	    2280 B/op	      28 allocs/op
+BenchmarkExecSnakeCaseDir-8             	   88321	     14756 ns/op	    1931 B/op	      27 allocs/op
+BenchmarkExecSnakeCaseLotDir-8          	     109	  10770991 ns/op	  611515 B/op	    4120 allocs/op
+BenchmarkExecSnakeCaseManyDir-8         	      14	  83155920 ns/op	 5913929 B/op	   10600 allocs/op
 PASS
 ok  	github.com/guerinoni/replacer	24.268s
 ```
