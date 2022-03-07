@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       # We need to checkout the repository to access the configured file (.github/label-pr.yml)
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Labeler
         uses: docker://decathlon/pull-request-labeler-action:2.0.0
         env:
