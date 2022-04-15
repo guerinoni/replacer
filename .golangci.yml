@@ -15,13 +15,18 @@ linters:
     - unused
     - varcheck
     - asciicheck
+    - bidichk
     - bodyclose
     - cyclop
+    - decorder
     - depguard
     - dogsled
     - dupl
     - durationcheck
+    - errchkjson
+    - errname
     - errorlint
+    - execinquery
     - exhaustive
     - exhaustivestruct
     - exportloopref
@@ -43,17 +48,21 @@ linters:
     - goheader
     - goimports
     - gomnd 
+    - gomoddirectives
     - gomodguard 
     - goprintffuncname
     - gosec
     - ifshort
     - importas
+    - ireturn
     - lll
+    - maintidx
     - makezero
     - misspell
     - nakedret
     - nestif 
     - nilerr
+    - nilnil
     - nlreturn 
     - noctx
     - nolintlint
@@ -66,11 +75,13 @@ linters:
     - sqlclosecheck
     - stylecheck
     - tagliatelle
+    - tenv
     # - testpackage
     - thelper
     - tparallel
     - unconvert
     - unparam
+    # - varnamelen
     - wastedassign
     - whitespace
     - wrapcheck
